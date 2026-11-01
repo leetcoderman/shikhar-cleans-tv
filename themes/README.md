@@ -102,6 +102,8 @@ A new key needs one there in the same pull request.
 | `wifi_status_color` | bool | The Wi-Fi pill's icon green while the TV is online, white while it is not (`false` by default) |
 | `wifi_status_warnings` | bool | With `wifi_status_color`, the icon orange while connected without internet (a captive portal waiting for its login page) and red while offline, instead of white (`false` by default) |
 | `wifi_label_width` | 0 to 300 | With `icon_only_buttons`, keep the network name on the Wi-Fi pill up to this width in dp, cut with an ellipsis; 0 leaves only the icon |
+| `header_inset` | 0 to 120 | Moves the header (clock on the left, round buttons on the right) this many dp in from both sides; 24 lines its edges up with the tiles' edges. 0 (the default) keeps the screen padding |
+| `settings_button_app` | package or `package/.Activity` | What the top bar's Settings gear opens instead of Android's settings, e.g. a panel's own settings app; ignored when it isn't installed or when `launcher_settings_button` is on. Empty by default |
 | `library_button` | bool | The app library as a round button in the top bar, beside Settings; needs `app_library`. Closing the library returns to it |
 | `show_library_pill` | bool | The App library pill after the last Home row (`true` by default); `false` hides it while `library_button` is on, so the top-bar button stays the way in and Down from the last row stays put, as with `app_library` off |
 | `always_show_names` | bool | Names under every tile, dimmed until focused, the dock included (its band grows to hold them); `false` by default shows only the focused tile's name |
@@ -139,6 +141,9 @@ A new key needs one there in the same pull request.
 | `handle_view_inputs` | bool | Answer the system input switcher (`VIEW_INPUTS`, what the remote's Input button becomes) with the Inputs menu, for sets whose stock launcher was its only handler (Hisense huangshan); `false` by default so a TV with its own input picker never gets a chooser |
 | `background_color` | `#RRGGBB` | Colour behind everything; black by default |
 | `sky_intensity` | 0 to 100 | Time-of-day backdrop: a dark gradient that follows the clock, 0 hides it (default) |
+| `horizon` | bool | Three hills in front of the sky, darker as they come nearer, with stars, a crescent moon and lights in the nearest hill at night; as focus moves across the tiles they slide a few dp the other way, the nearest furthest. Needs `sky_intensity` for the sky behind them (`false` by default) |
+| `time_quotes` | bool | A short quote for the time of day in place of the greeting: a new one every hour from the morning, afternoon, evening or night list in the launcher's `res/values/quotes.xml`; a festive skin's greeting still wins (`false` by default) |
+| `home_name` | text | A family's name, e.g. `Gupta's`, lettered at the top centre, with a small house on the near hill whose windows light up one by one at dusk; needs `horizon`. Empty by default draws neither |
 | `wallpaper` | bool | Show the theme's picture, `wallpaper.jpg` or its `wallpapers/` collection (`true`), or draw neither (`false`) |
 | `wallpaper_rotation_minutes` | 0 to 1440 | Rotate images in the theme's `wallpapers/` folder at this interval; 0 keeps the single-image behaviour. A negative or non-numeric value is ignored, and 0 means "no rotation", not "every minute" |
 | `wallpaper_order` | `shuffle` or `sequential` | How a collection advances. `shuffle` (the default, and what launchers did before this key existed) avoids repeating the current picture; `sequential` walks the folder in filename order and wraps at the end. An unknown value falls back to `shuffle` |

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Set on the volume and brightness steppers: held select on the remote keeps stepping. -->
+    <item name="repeats" type="id" />
+</resources>

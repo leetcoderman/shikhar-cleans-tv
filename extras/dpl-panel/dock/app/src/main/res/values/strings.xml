@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Gupta\'s TV dock</string>
+    <string name="description">The dock at the bottom of the screen: Back, Home, pinned apps and the panel tools.</string>
+    <string name="back">Back</string>
+    <string name="home">Home</string>
+    <string name="inputs">Inputs</string>
+    <string name="annotate">Annotate</string>
+    <string name="screenshot">Screenshot</string>
+    <string name="volume">Volume</string>
+    <string name="mute">Mute</string>
+    <string name="quieter">Quieter</string>
+    <string name="louder">Louder</string>
+    <string name="brightness">Brightness</string>
+    <string name="dimmer">Dimmer</string>
+    <string name="brighter">Brighter</string>
+    <string name="tools">More tools</string>
+    <string name="settings">Android settings</string>
+    <string name="show_dock">Show dock</string>
+    <string name="screen_record">Record</string>
+    <string name="timer">Timer</string>
+    <string name="spotlight">Spotlight</string>
+    <string name="magnifier">Magnifier</string>
+    <string name="curtain">Curtain</string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="airplay">AirPlay</string>
+    <string name="iphone_remote">iPhone remote</string>
+    <string name="close_app">Close app</string>
+    <string name="nothing_to_close">No app open to close</string>
+    <string name="close_failed">Couldn\'t close it (local ADB refused)</string>
+    <string name="cant_close">The TV needs this one running</string>
+    <string name="power">Power</string>
+    <string name="power_off">Power off</string>
+    <string name="restart">Restart</string>
+    <string name="restart_failed">Restart didn\'t go through (local ADB refused)</string>
+    <string name="clean_ram">Clean RAM</string>
+    <string name="ram_cleaned">Freed %1$d MB · %2$.1f GB free</string>
+    <string name="ram_clean_failed">Couldn\'t clean RAM (local ADB refused)</string>
+    <string name="not_available">Not available on this panel</string>
+    <string name="mac_adb">Mac ADB</string>
+    <string name="mac_adb_open">ADB open to the network until %1$s (tap Mac ADB again to lock)</string>
+    <string name="mac_adb_locked">ADB locked to this TV</string>
+    <string name="mac_adb_failed">Couldn\'t change ADB (local ADB refused)</string>
+</resources>

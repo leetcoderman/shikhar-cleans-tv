@@ -1,0 +1,36 @@
+diff -ru a/lib/mdnsd/dnssd_mdnsd.c lib/mdnsd/dnssd_mdnsd.c
+--- a/lib/mdnsd/dnssd_mdnsd.c	2026-10-30 01:53:25
++++ b/lib/mdnsd/dnssd_mdnsd.c	2026-10-30 01:53:34
+@@ -62,8 +62,13 @@
+ static void dnssd_make_host_name(char *dst, size_t dst_len)
+ {
+     char host[128];
++    /* Android patch (Gupta's TV): gethostname() returns "localhost" on Android, which would
++       advertise "localhost.local"; let the app choose the host label instead. */
++    const char *override = getenv("UXPLAY_MDNS_HOSTNAME");
+ 
+-    if (gethostname(host, sizeof(host)) || !host[0]) {
++    if (override && *override) {
++        snprintf(host, sizeof(host), "%s", override);
++    } else if (gethostname(host, sizeof(host)) || !host[0]) {
+         snprintf(host, sizeof(host), "UxPlay");
+     }
+     host[sizeof(host) - 1] = '\0';
+diff -ru a/lib/mdnsd/mdnsd.c lib/mdnsd/mdnsd.c
+--- a/lib/mdnsd/mdnsd.c	2026-10-30 01:53:25
++++ b/lib/mdnsd/mdnsd.c	2026-10-30 01:53:34
+@@ -348,6 +348,14 @@
+ static uint32_t mdns_get_default_ipv4(void)
+ {
+     uint32_t addr = 0;
++#ifdef __ANDROID__
++    /* Android patch (Gupta's TV): the app passes the panel's LAN address, so the A record
++       never points at a loopback or VPN address. */
++    const char *override = getenv("UXPLAY_MDNS_IPV4");
++    if (override && *override && inet_pton(AF_INET, override, &addr) == 1) {
++        return addr;
++    }
++#endif
+ #ifdef _WIN32
+     ULONG buflen = 15000;
+     PIP_ADAPTER_ADDRESSES pAddresses = NULL;

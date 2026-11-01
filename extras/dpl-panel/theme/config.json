@@ -1,0 +1,80 @@
+{
+  "dock_apps": [
+    "com.netflix.mediaclient",
+    "com.amazon.amazonvideo.livingroom",
+    "in.startv.hotstar",
+    "com.sonyliv",
+    "com.fancode.tv",
+    "tv.airtel.xstream.tvapp",
+    "com.apple.atve.androidtv.appletv",
+    "com.google.android.youtube.tv",
+    "com.stremio.one",
+    "com.phlox.tvwebbrowser",
+    "com.aurora.store",
+    "com.android.vending",
+    "com.rp.rpsettings",
+    "com.android.tv.settings",
+    "com.android.documentsui",
+    "com.fqcx.wb"
+  ],
+  "library_apps": [
+    "com.netflix.mediaclient",
+    "com.amazon.amazonvideo.livingroom",
+    "in.startv.hotstar",
+    "com.sonyliv",
+    "com.fancode.tv",
+    "tv.airtel.xstream.tvapp",
+    "com.apple.atve.androidtv.appletv",
+    "com.google.android.youtube.tv",
+    "com.stremio.one",
+    "com.phlox.tvwebbrowser",
+    "com.aurora.store",
+    "com.android.vending",
+    "com.rp.rpsettings",
+    "com.android.tv.settings",
+    "com.android.documentsui",
+    "com.fqcx.wb"
+  ],
+  "hidden_apps": [
+    "com.droidlogic.android.tv",
+    "com.gupta.airplayreceiver",
+    "com.corvofeng.fakeatv"
+  ],
+  "app_labels": [
+    "com.amazon.avod.thirdpartyclient=Prime Video",
+    "com.fqcx.wb=Whiteboard",
+    "com.rp.rpsettings=Bluetooth",
+    "com.aurora.store=App Store",
+    "com.android.vending=Play Store",
+    "com.android.tv.settings=Settings",
+    "com.android.documentsui=Files"
+  ],
+  "launch_actions": [
+    "com.rp.rpsettings=com.rp.settings.BLUETOOTH_SETTINGS"
+  ],
+  "dock_row": false,
+  "columns": 6,
+  "always_show_names": false,
+  "fill_dock": false,
+  "time_quotes": false,
+  "greeting_name": "",
+  "reduced_motion": true,
+  "focus_overshoot": false,
+  "show_inputs_pill": true,
+  "library_button": true,
+  "show_network_pill": true,
+  "icon_only_buttons": true,
+  "sky_intensity": 100,
+  "horizon": true,
+  "dock_opacity": 100,
+  "home_name": "Gupta's",
+  "app_banners": [
+    "com.netflix.mediaclient=banner_netflix",
+    "com.aurora.store=banner_appstore",
+    "com.android.vending=banner_playstore",
+    "com.fqcx.wb=banner_whiteboard",
+    "com.android.documentsui=banner_files"
+  ],
+  "header_inset": 24,
+  "settings_button_app": "com.rp.rpsettings"
+}

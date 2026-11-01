@@ -1,0 +1,12 @@
+# Haier MatrixTV EE: apps the owner chose to switch off (2026-10-23). Disabled, not uninstalled.
+# Undo: TV_HOST=<tv ip> tools/restore.sh ../haier-matrixtv-ee/2-apps-owner-chose.txt
+com.google.android.videos                        # Google TV movies store
+com.google.android.play.games
+ahaflix.tv                                       # aha
+com.viewlift.hoichoi
+com.viki.android
+com.discoveryplus.tv.android
+com.mxtech.videoplayer.television                # MX Player
+com.nbaimd.gametime.nba2011                      # NBA
+com.rma.speedtesttv                              # Speedtest
+evdoo.mdotv

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Quotes shown in place of the greeting when time_quotes is on (config.xml), one list per part of the day:
+         morning from 05:00, afternoon from 12:00, evening from 17:00, night from 21:00. A new one every hour.
+         Each entry is "text|author". Keep an entry to about 60 characters with its author: the line beside the
+         top buttons is about 400dp wide, and a longer quote shrinks to 12sp, then is cut with an ellipsis.
+         All are public domain. -->
+    <string-array name="quotes_morning" translatable="false">
+        <item>Only that day dawns to which we are awake.|Thoreau</item>
+        <item>Morning is when I am awake and there is a dawn in me.|Thoreau</item>
+        <item>The sun is new each day.|Heraclitus</item>
+        <item>Begin at once to live.|Seneca</item>
+        <item>One today is worth two tomorrows.|Benjamin Franklin</item>
+        <item>Arise, awake, and stop not till the goal is reached.|Vivekananda</item>
+        <item>Do tomorrow\'s work today, and today\'s work now.|Kabir</item>
+        <item>Well begun is half done.|Proverb</item>
+    </string-array>
+    <string-array name="quotes_afternoon" translatable="false">
+        <item>Simplify, simplify.|Thoreau</item>
+        <item>Adopt the pace of nature: her secret is patience.|Emerson</item>
+        <item>Well done is better than well said.|Benjamin Franklin</item>
+        <item>Knowing is not enough; we must apply.|Goethe</item>
+        <item>The best way out is always through.|Robert Frost</item>
+        <item>Action is eloquence.|Shakespeare</item>
+        <item>Dripping water hollows out stone.|Ovid</item>
+        <item>Lost time is never found again.|Benjamin Franklin</item>
+    </string-array>
+    <string-array name="quotes_evening" translatable="false">
+        <item>Rest belongs to the work as the eyelids to the eyes.|Tagore</item>
+        <item>Finish every day and be done with it.|Emerson</item>
+        <item>There is nothing like staying at home for real comfort.|Jane Austen</item>
+        <item>Rest is not idleness.|John Lubbock</item>
+        <item>Laugh, and the world laughs with you.|Ella Wheeler Wilcox</item>
+        <item>Hope is the thing with feathers.|Emily Dickinson</item>
+        <item>We must cultivate our garden.|Voltaire</item>
+    </string-array>
+    <string-array name="quotes_night" translatable="false">
+        <item>The stars are not afraid to appear like fireflies.|Tagore</item>
+        <item>We are such stuff as dreams are made on.|Shakespeare</item>
+        <item>Tired nature\'s sweet restorer, balmy sleep!|Edward Young</item>
+        <item>O sleep, O gentle sleep, nature\'s soft nurse.|Shakespeare</item>
+        <item>It is always darkest just before the dawn.|Thomas Fuller</item>
+        <item>The night is the mother of counsel.|Proverb</item>
+        <item>A good conscience is a soft pillow.|Proverb</item>
+    </string-array>
+</resources>

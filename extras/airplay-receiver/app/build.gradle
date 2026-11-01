@@ -1,0 +1,57 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Signing: keystore/receiver.p12, password in keystore/password.txt (see README).
+def ksDir = rootProject.file('keystore')
+def ksPass = new File(ksDir, 'password.txt').exists() ? new File(ksDir, 'password.txt').text.trim() : null
+
+android {
+    namespace 'com.gupta.airplayreceiver'
+    compileSdk 34
+    ndkVersion '27.2.12479018'
+
+    defaultConfig {
+        applicationId 'com.gupta.airplayreceiver'
+        minSdk 30
+        targetSdk 30   // the panel runs Android 11; keeps background-start and FGS rules at API 30
+        versionCode 1
+        versionName '1.0'
+        ndk {
+            abiFilters 'armeabi-v7a'   // the panel's userspace is 32-bit only
+        }
+    }
+
+    signingConfigs {
+        household {
+            storeFile new File(ksDir, 'receiver.p12')
+            storePassword ksPass
+            keyAlias 'guptas-tv'
+            keyPassword ksPass
+            storeType 'pkcs12'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig ksPass ? signingConfigs.household : signingConfigs.debug
+        }
+    }
+
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/cpp/Android.mk'
+        }
+    }
+
+    lint {
+        // Sideloaded on one Android 11 panel, never published to Google Play.
+        disable 'ExpiredTargetSdkVersion'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}

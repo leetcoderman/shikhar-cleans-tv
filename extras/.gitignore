@@ -1,0 +1,8 @@
+build/
+.gradle/
+.cxx/
+local.properties
+keystore/
+*.apk
+*.idsig
+iphone-remote/atv-core/

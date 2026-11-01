@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Restart: the panel's own ADB on 127.0.0.1:5555 (no auth on this panel), as the iPhone bridge uses it. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <queries>
+        <!-- More tools opens these two apps' screens. -->
+        <package android:name="com.gupta.airplayreceiver" />
+        <package android:name="com.corvofeng.fakeatv" />
+        <!-- The Android settings button opens this app explicitly. -->
+        <package android:name="com.android.tv.settings" />
+    </queries>
+
+    <application
+        android:label="@string/app_name"
+        android:icon="@drawable/ic_dock"
+        android:allowBackup="false">
+        <service
+            android:name=".DockService"
+            android:label="@string/app_name"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/dock_service" />
+        </service>
+    </application>
+</manifest>

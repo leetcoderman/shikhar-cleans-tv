@@ -342,6 +342,15 @@
     <!-- With icon_only_buttons: keep the network name on the Wi-Fi pill up to this width in dp, cut with an ellipsis.
          0 leaves the Wi-Fi pill as an icon. -->
     <integer name="wifi_label_width">0</integer>
+    <!-- Move the header (clock on the left, round buttons on the right) this many dp in from both sides, e.g. 24 to line
+         its edges up with the tiles' edges. 0 (the default) keeps it at the screen padding. Can also be set with
+         "header_inset" in a theme's config.json. -->
+    <integer name="header_inset">0</integer>
+    <!-- What the top bar's Settings gear opens: an app's package (its launch screen) or a component
+         ("package/.Activity"), e.g. a panel's own settings app. Empty (the default) opens Android's settings. Ignored
+         when that app is missing, and when launcher_settings_button turns the gear into Home settings. Can also be
+         set with "settings_button_app" in a theme's config.json. -->
+    <string name="settings_button_app" translatable="false"></string>
 
     <!-- The Wi-Fi/Ethernet pill in the top bar. false hides it (on Android 14 with Location off it can
          only say "Wi-Fi", not the network name). Can also be set with "show_network_pill" in a theme. -->
@@ -468,6 +477,21 @@
          Vilnius: 54.69 and 25.28. -->
     <string name="latitude" translatable="false"></string>
     <string name="longitude" translatable="false"></string>
+    <!-- Hills in front of the sky: three layers, nearer ones darker, with stars, a crescent moon and lights in the
+         nearest hill at night. As focus moves across the tiles the hills slide a few dp the other way, the nearest
+         furthest, so the screen has depth. Needs sky_intensity, which draws the sky behind them. The masks are drawn
+         once (about 2 MB at 1080p); a minute only changes their colours. false (the default) draws no hills. Can
+         also be set with "horizon": true in a theme's config.json. -->
+    <bool name="horizon">false</bool>
+    <!-- A short quote for the time of day in place of the greeting ("Good morning"): a new one every hour from the
+         morning, afternoon, evening or night list in res/values/quotes.xml. A festive skin's greeting still wins.
+         false (the default) keeps the greeting. Can also be set with "time_quotes": true in a theme's
+         config.json. -->
+    <bool name="time_quotes">false</bool>
+    <!-- A family's name, e.g. "Gupta's": lettered at the top centre of the screen, with a small house on the near
+         hill whose windows light up one by one at dusk and go dark late at night, one left on. Needs horizon. Empty
+         (the default) draws neither. Can also be set with "home_name" in a theme's config.json. -->
+    <string name="home_name" translatable="false"></string>
 
     <!-- Cinematic top shelf: the focused dock app's artwork, softened, fills the top of the screen in its
          colour; the shelf gets a larger name, a "Last opened" line (from the apps Home opened) and dock position

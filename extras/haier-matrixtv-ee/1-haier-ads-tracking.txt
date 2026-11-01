@@ -1,0 +1,33 @@
+# Haier MatrixTV EE (product HR9676EU, device omonia), Google TV 14 (API 34), firmware UKN5.251016.114,
+# MediaTek / CVTE board, 1.8 GB RAM. Built 2026-10-23 from examples/haier-h32s80efx (MatrixTV CE, device
+# deto) plus EE-only packages checked with dumpsys package (none were launched).
+#
+# Apply:  TV_HOST=<tv ip> tools/disable.sh ../haier-matrixtv-ee/1-haier-ads-tracking.txt
+# Undo:   TV_HOST=<tv ip> tools/restore.sh ../haier-matrixtv-ee/1-haier-ads-tracking.txt
+#
+# KEEP on this set (checked with dumpsys):
+# - com.cltv.hybrid: BIND_TV_INPUT AnokiTvInputService, HbbTV, PVR, GlobalKeyReceiver (Live TV path).
+# - com.cltv.mal: device admin receiver + on/off handler.
+# - com.mediatek.tv.launcher.partner: partner ConfigurationProvider read at boot (same family as the
+#   partnercustomizer that broke the Input key on MediaTek sets after a reboot).
+# - com.telink.lt (remote firmware, also claims HOME), com.mediatek.autopair, com.haier.bt_pair_tips.
+# - com.haier.appmanager.dispatcher, com.haier.hkcfac, com.haier.tv.hmagicboard: remote hot keys.
+# - com.at.factory.*, com.cvte.tv.at, com.cvte.autobacklight, mediatek.factorymenu.ui: factory, never open.
+# - com.google.android.tv.axel, com.google.android.katniss, com.google.android.apps.mediashell,
+#   com.mediatek.tv.systemupdater: remote audio/OOBE, voice, Chromecast, updates (owner chose to keep).
+
+# Haier / partner telemetry, IoT and ACR
+it.hon.service                                   # Haier hOn IoT service, starts at boot
+com.haierubic.usmartdevice                       # Haier smart-device service, starts at boot
+tv.anoki.acr.anokiacroptin                       # Anoki ACR (identifies what is on screen)
+com.google.android.feedback
+
+# Haier content and ads
+com.haier.oemtabprovider                         # the "Haier" tab on the Google TV home
+com.haier.launcher.haiermatrix                   # Zeasn content screen (Firebase), not the system Home
+com.haier.apps                                   # Kinopoisk promo activity
+
+# Retail demo, cleaner, manual
+com.mediatek.tv.retaildemo                       # shop demo mode
+com.haier.tvhousekeeper                          # "TV housekeeper" cleaner
+com.haier.emanual9603                            # on-screen manual

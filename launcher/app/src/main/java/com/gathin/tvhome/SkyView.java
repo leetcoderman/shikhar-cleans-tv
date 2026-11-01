@@ -69,11 +69,14 @@ public class SkyView extends View {
         if (intensity > 0) render(true);
     }
 
-    /** Today's sunrise and sunset at the configured place, or null without one (fixed reference day). */
+    /**
+     * Today's sunrise and sunset at the configured place, or null without one (fixed reference day).
+     * HorizonView reads the same place, so its hills and stars follow the same sun as this sky.
+     */
     @Nullable
-    private int[] sunTimes() {
-        String lat = getContext().getString(R.string.latitude);
-        String lon = getContext().getString(R.string.longitude);
+    static int[] sunTimes(Context context) {
+        String lat = context.getString(R.string.latitude);
+        String lon = context.getString(R.string.longitude);
         if (lat.isEmpty() || lon.isEmpty()) return null;
         try {
             return Sun.riseAndSet(LocalDate.now(), Double.parseDouble(lat), Double.parseDouble(lon),
@@ -89,7 +92,7 @@ public class SkyView extends View {
         if (!force && minute == lastMinute) return;
         lastMinute = minute;
 
-        int[] sun = sunTimes();
+        int[] sun = sunTimes(getContext());
         Sky.Palette sky = sun == null ? Sky.at(minute) : Sky.at(minute, sun[0], sun[1]);
         if (texture == null) texture = Bitmap.createBitmap(TEX_W, TEX_H, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(texture);

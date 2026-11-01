@@ -108,6 +108,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     static final String ACTION_APP_LIBRARY = "com.gathin.tvhome.action.APP_LIBRARY";
     /** The system input switcher, forwarded here by InputsRequestActivity while handle_view_inputs is on. */
     static final String ACTION_VIEW_INPUTS = "com.android.tv.action.VIEW_INPUTS";
+    /** Broadcast when Down is pressed on the grid's last row with nothing below, for an overlay dock to take focus. */
+    static final String ACTION_FOCUS_BELOW = "com.gathin.tvhome.action.FOCUS_BELOW";
     /** Tiles per row and dock slots (res/values/config.xml, columns). Set in onCreate. */
     static int COLUMNS = 4;
     private boolean rtlAppGrid;
@@ -215,6 +217,12 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private String greetingName = "";
     /** Optional time-of-day backdrop (config.xml, sky_intensity); 0 keeps it hidden. */
     private SkyView sky;
+    /** Optional hills in front of the sky that follow focus (config.xml, horizon); gone when off. */
+    private HorizonView horizon;
+    /** config.xml time_quotes: a quote for the time of day in place of the greeting. */
+    private boolean timeQuotes;
+    /** The quote entry on screen, so the minute tick only lays the line out again when the hour brings a new one. */
+    private String quoteShown = "";
     private String vpnApp;
     /** vpn_pill: the VPN shown as its own pill (btnVpn) instead of a badge in the network pill. Off with top_menu. */
     private boolean vpnPill;
@@ -320,6 +328,20 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
      * reach Home after onPause, when that key opened another app, and must not start the clock over the app.
      */
     private boolean resumed;
+    /** The tile that had focus when an overlay took window focus; its highlight is off until focus returns. */
+    private View handedOff;
+    /**
+     * An overlay can take window focus without ACTION_FOCUS_BELOW (a dock reached from the remote some other way):
+     * still on Home a moment later means no app is starting, so the focused view hands off its highlight the same way.
+     */
+    private final Runnable overlayFocusCheck = () -> {
+        if (!resumed || hasWindowFocus() || handedOff != null) return;
+        View f = getCurrentFocus();
+        if (f == null || f.getOnFocusChangeListener() == null) return;
+        handedOff = f;
+        f.getOnFocusChangeListener().onFocusChange(f, false);
+        hideGlass();
+    };
     /** Rebuild the tiles on the way back to Home only when apps changed meanwhile (TileRefresh). */
     private final TileRefresh tileRefresh = new TileRefresh();
     /** PackageManager's change counter at the last rebuild, to catch a package broadcast that never arrived. */
@@ -436,6 +458,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             // signal level, so only it needs this minute's binder calls (about 7 ms on the UI thread).
             if (festive) updateWifiLabel();
             sky.update();
+            horizon.update();
             wallpaperPlayer.update();
             handler.postDelayed(this, MINUTE_MS);
         }
@@ -503,6 +526,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         wallpaperPlayer = new WallpaperPlayer(this, root, cfg);
         sky = findViewById(R.id.sky);
         sky.setIntensity(cfg.skyIntensity);
+        horizon = findViewById(R.id.horizon);
+        if (cfg.horizon) horizon.setUp(true, cfg.animations, cfg.homeName);
         glass = findViewById(R.id.glass);
         glass.setStyle(cfg.glassStyle);
         if (festive) glass.setAccent(festival.accentColor());
@@ -535,6 +560,17 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         clockBlock = findViewById(R.id.leftBlock);
         greetingColor = greeting.getCurrentTextColor();
         if (!cfg.showGreeting) greeting.setVisibility(View.GONE);
+        timeQuotes = cfg.timeQuotes;
+        if (timeQuotes) {
+            // A quote reads as a sentence: no capitals or wide tracking, a little larger and brighter than the
+            // greeting. The line keeps its 14sp height when fitQuote shrinks a long one, so the clock stays put.
+            greeting.setAllCaps(false);
+            greeting.setLetterSpacing(0.01f);
+            greeting.setTypeface(UiFont.get(this, R.string.font_regular));
+            greeting.setTextSize(TypedValue.COMPLEX_UNIT_SP, QUOTE_SP);
+            greeting.setMinHeight(greeting.getLineHeight());
+            greetingColor = QUOTE_COLOR;
+        }
         // Keep the other header layouts as designed: their extra lines change the block's centre.
         if (!cfg.showGreeting && !cfg.dateBelowClock && !cfg.shamsiDate && !cfg.lunarDate
                 && !cfg.topMenu && !getResources().getBoolean(R.bool.rtl_menu_bar)) {
@@ -822,7 +858,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         btnSettings.setOnClickListener(v -> {
             if (launcherSettingsButton) startActivityForResult(
                     new Intent(this, LauncherSettingsActivity.class), LAUNCHER_SETTINGS_REQUEST);
-            else open(systemIntent(Settings.ACTION_SETTINGS));
+            else open(settingsButtonIntent(cfg.settingsButtonApp));
         });
         btnReorder = findViewById(R.id.btnReorder);
         btnReorder.setOnClickListener(v -> toggleReorder());
@@ -836,6 +872,15 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             libraryFromTopBar = true;   // closing it goes back to this button, not to the pill after the last row
         });
         btnLibraryTop.setVisibility(cfg.libraryButton && cfg.appLibrary ? View.VISIBLE : View.GONE);
+        if (cfg.headerInset > 0) {
+            // header_inset: the header's edges move in to the tiles' edges (the grid's padding plus each tile's margin).
+            View header = (View) clockBlock.getParent();
+            ViewGroup.MarginLayoutParams hlp = (ViewGroup.MarginLayoutParams) header.getLayoutParams();
+            int inset = Math.round(cfg.headerInset * density);
+            hlp.setMarginStart(inset);
+            hlp.setMarginEnd(inset);
+            header.setLayoutParams(hlp);
+        }
         addTopBarApps(cfg.topBarApps, cfg.launchActions);
         iconOnlyButtons = cfg.iconOnlyButtons;
         topMenu = cfg.topMenu;
@@ -1123,6 +1168,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (showStats) startStats();
         if (gameDay != null) gameDay.start();
         sky.update();
+        horizon.update();
         wallpaperPlayer.start();
         handler.postDelayed(minuteTick, MINUTE_MS);
         if (festive && lamp != null) {
@@ -1291,6 +1337,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     protected void onPause() {
         super.onPause();
         resumed = false;
+        handler.removeCallbacks(overlayFocusCheck);
         // No UP reaches a paused Home, so a vendor-key hold it saw go down would still open its app later.
         // Only Home's own share is dropped: a key service that saw the same DOWN keeps its hold.
         RemoteKeys.release(this);
@@ -1298,6 +1345,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         root.removeCallbacks(showIdleClock);
         endReorder();   // Home or another app while reordering keeps the order so far
         wallpaperPlayer.stop();
+        horizon.stop();
         stopAmbientAnimation();
         hero.animate().cancel();
         ambient.animate().cancel();
@@ -1351,7 +1399,17 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
+        // A tile keeps view focus while an overlay (a dock app, ACTION_FOCUS_BELOW) holds window focus: drop its
+        // highlight until focus comes back, so only one thing on screen looks focused.
+        if (handedOff != null && handedOff.getOnFocusChangeListener() != null) {
+            handedOff.getOnFocusChangeListener().onFocusChange(handedOff, hasFocus && handedOff.isFocused());
+            if (hasFocus) handedOff = null;   // the listener puts the glass back on the tile
+            else hideGlass();
+        } else if (!hasFocus) {
+            handler.postDelayed(overlayFocusCheck, 200);
+        }
         if (hasFocus) {
+            handler.removeCallbacks(overlayFocusCheck);
             startPendingSettingsReorder();
             if (libraryFocusPending && appLibrary == null) focusLibrary();
             showCardPrompt();
@@ -1797,6 +1855,9 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         Rect r = tileRect;
         r.set(0, 0, card.getWidth(), card.getHeight());
         root.offsetDescendantRectToMyCoords(card, r);
+        if (root.getWidth() > 0 && root.getHeight() > 0) {
+            horizon.follow(r.exactCenterX() / root.getWidth(), r.exactCenterY() / root.getHeight());
+        }
         float pad = 6f * density;        // matches GlassView's glow inset
         float scale = adapter.focusScale();
         float w = card.getWidth() * scale + 2 * pad;
@@ -2220,6 +2281,30 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         }
     }
 
+    /** Nothing below the grid: tell an overlay at the bottom (a dock app, if one listens) to take focus. */
+    private void focusBelow() {
+        handedOff = getCurrentFocus();
+        sendBroadcast(new Intent(ACTION_FOCUS_BELOW));
+    }
+
+    /** settings_button_app's launch screen when that app is installed, otherwise Android's settings. */
+    private Intent settingsButtonIntent(String app) {
+        if (!app.isEmpty()) {
+            PackageManager pm = getPackageManager();
+            ComponentName component = app.contains("/") ? ComponentName.unflattenFromString(app) : null;
+            String pkg = component != null ? component.getPackageName() : app;
+            try {
+                pm.getPackageInfo(pkg, 0);
+                Intent intent = component != null ? new Intent().setComponent(component) : pm.getLaunchIntentForPackage(pkg);
+                if (intent == null) intent = pm.getLeanbackLaunchIntentForPackage(pkg);
+                if (intent != null) return intent;
+            } catch (PackageManager.NameNotFoundException ignored) {
+                // Not installed (or not visible): Android's settings below.
+            }
+        }
+        return systemIntent(Settings.ACTION_SETTINGS);
+    }
+
     private void hideGlass() {
         if (!glassShown) return;
         glassShown = false;
@@ -2427,7 +2512,10 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             // One row: Up leaves for the top bar, Down has nowhere to go, and Left/Right walk the whole row,
             // stopping at its two ends (the default focus search scrolls the row to the next tile).
             if (keyCode == KeyEvent.KEYCODE_DPAD_UP) return false;
-            if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) return true;
+            if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+                focusBelow();
+                return true;
+            }
             boolean forward = rtlAppGrid ? keyCode == KeyEvent.KEYCODE_DPAD_LEFT : keyCode == KeyEvent.KEYCODE_DPAD_RIGHT;
             int last = adapter.focusablePosition(count - 1);
             if (forward && position >= last) {
@@ -2456,6 +2544,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             int lastRowStart = ((count - 1) / COLUMNS) * COLUMNS;
             if (position >= lastRowStart) {
                 if (adapter.isLibraryAt(count)) focusLibrary();
+                else focusBelow();
                 return true;
             }
             target = Math.min(position + COLUMNS, count - 1);
@@ -2746,8 +2835,11 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         }
         String festiveGreeting = festive ? festival.greetingText(getResources()) : "";
         if (!festiveGreeting.isEmpty()) {
+            quoteShown = "";
             greeting.setText(festiveGreeting);
             greeting.setTextColor(liftTowardsWhite(festival.accentColor(), 0.25f));
+        } else if (timeQuotes) {
+            showQuote(hour);
         } else {
             greeting.setText(greetingName.isEmpty() ? getString(res)
                     : getString(R.string.greeting_with_name, getString(res), greetingName));
@@ -2755,6 +2847,53 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         }
         if (shamsi) shamsiDate.setText(Shamsi.today(getResources()));
         if (lunar) lunarDate.setText(Lunar.today(getResources(), lunarOffset));
+    }
+
+    /** The quote lists in res/values/quotes.xml, by Quotes' part of the day. */
+    private static final int[] QUOTE_LISTS = {
+            R.array.quotes_morning, R.array.quotes_afternoon, R.array.quotes_evening, R.array.quotes_night};
+    private static final float QUOTE_SP = 14f;
+    /** Smallest size fitQuote shrinks a long quote to; past it the line is cut with an ellipsis. */
+    private static final float QUOTE_MIN_SP = 12f;
+    private static final int QUOTE_COLOR = 0xB3FFFFFF;
+    private static final int QUOTE_AUTHOR_COLOR = 0x73FFFFFF;
+
+    /** This hour's quote in place of the greeting, its author dimmer after a dash (time_quotes). */
+    private void showQuote(int hour) {
+        String[] list = getResources().getStringArray(QUOTE_LISTS[Quotes.partOfDay(hour)]);
+        int i = Quotes.index(list.length, LocalDate.now().toEpochDay(), hour);
+        String entry = i < 0 ? "" : list[i];
+        if (entry.equals(quoteShown) && greeting.getText().length() > 0) return;
+        quoteShown = entry;
+        String[] quote = Quotes.split(entry);
+        String text = quote[1].isEmpty() ? quote[0] : quote[0] + "  \u2014 " + quote[1];
+        SpannableString line = new SpannableString(text);
+        if (!quote[1].isEmpty()) {
+            line.setSpan(new ForegroundColorSpan(QUOTE_AUTHOR_COLOR), quote[0].length(), text.length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        greeting.setTextColor(greetingColor);
+        greeting.setText(line);
+        fitQuote();
+    }
+
+    /** Shrinks a quote too long for the line beside the top buttons, half a point at a time down to QUOTE_MIN_SP. */
+    private void fitQuote() {
+        if (!greeting.isLaidOut()) {
+            greeting.post(this::fitQuote);
+            return;
+        }
+        int width = greeting.getWidth() - greeting.getTotalPaddingLeft() - greeting.getTotalPaddingRight();
+        if (width <= 0) return;
+        TextPaint probe = new TextPaint(greeting.getPaint());
+        String text = greeting.getText().toString();
+        float sp = QUOTE_SP;
+        while (sp > QUOTE_MIN_SP) {
+            probe.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, getResources().getDisplayMetrics()));
+            if (probe.measureText(text) <= width) break;
+            sp -= 0.5f;
+        }
+        greeting.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
     }
 
     // ---- race-weekend panel (a theme's race_calendar) -----------------------------------------------
@@ -2940,7 +3079,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             if (!online) {
                 text = getString(R.string.offline);
                 vpn = false;
-            } else if (ethernet) {
+            } else if (ethernet && !wifi) {
+                // On both (an interactive panel with a cable and Wi-Fi), the pill opens Wi-Fi settings, so show Wi-Fi.
                 text = getString(R.string.ethernet);
                 icon = R.drawable.ic_ethernet;
                 flame = 4;

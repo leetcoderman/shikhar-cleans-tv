@@ -1,0 +1,3640 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index 22b13fb..d442c91 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -30,6 +30,7 @@ dependencies = [
+  "once_cell",
+  "tokio",
+  "tracing",
++ "tracing-subscriber",
+ ]
+ 
+ [[package]]
+@@ -55,6 +56,7 @@ dependencies = [
+  "mdns-sd",
+  "num-bigint",
+  "num-traits",
++ "plist",
+  "rand",
+  "sha2",
+  "thiserror 2.0.21",
+@@ -70,6 +72,12 @@ version = "1.5.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53"
+ 
++[[package]]
++name = "base64"
++version = "0.23.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "ac07cdecf99051d9a5238b80f35af32cdeba5b336e55d957b318b50137e18da5"
++
+ [[package]]
+ name = "base64ct"
+ version = "1.8.3"
+@@ -217,6 +225,12 @@ dependencies = [
+  "zeroize",
+ ]
+ 
++[[package]]
++name = "deranged"
++version = "0.5.9"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "9e9de72ce2ad1f90dc62fa25f0f430ef85eb4b0d8fa0be4f30373bc40a21d28e"
++
+ [[package]]
+ name = "digest"
+ version = "0.10.7"
+@@ -252,6 +266,12 @@ dependencies = [
+  "zeroize",
+ ]
+ 
++[[package]]
++name = "equivalent"
++version = "1.0.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "00d174d5400e5e8fd687ad1049e2f578285fa914201b1af7e8b112a4546bd826"
++
+ [[package]]
+ name = "errno"
+ version = "0.3.14"
+@@ -347,6 +367,12 @@ dependencies = [
+  "r-efi",
+ ]
+ 
++[[package]]
++name = "hashbrown"
++version = "0.17.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "ed5909b6e89a2db4456e54cd5f673791d7eca6732202bbf2a9cc504fe2f9b84a"
++
+ [[package]]
+ name = "hex"
+ version = "0.4.3"
+@@ -381,6 +407,16 @@ dependencies = [
+  "windows-sys 0.59.0",
+ ]
+ 
++[[package]]
++name = "indexmap"
++version = "2.14.2"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "cc4e190f5d26ca7051642629da2c52fc03bde85a03197c99408dcd291734c855"
++dependencies = [
++ "equivalent",
++ "hashbrown",
++]
++
+ [[package]]
+ name = "inout"
+ version = "0.1.4"
+@@ -533,6 +569,12 @@ dependencies = [
+  "rand",
+ ]
+ 
++[[package]]
++name = "num-conv"
++version = "0.2.2"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "521739c6d2bac4aa25192232afe6841231376b2b26d4d9fae5ecf8ca5772e441"
++
+ [[package]]
+ name = "num-integer"
+ version = "0.1.47"
+@@ -579,6 +621,19 @@ dependencies = [
+  "spki",
+ ]
+ 
++[[package]]
++name = "plist"
++version = "1.10.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "327a4cb2ad49dc48adfdc9da89e22c64d488b508c67a044d71ba729e4521a285"
++dependencies = [
++ "base64",
++ "indexmap",
++ "quick-xml",
++ "serde",
++ "time",
++]
++
+ [[package]]
+ name = "poly1305"
+ version = "0.8.0"
+@@ -590,6 +645,12 @@ dependencies = [
+  "universal-hash",
+ ]
+ 
++[[package]]
++name = "powerfmt"
++version = "0.2.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "4a6394b9e965e73d0a289ee54f589087e2c676aedf60885baf52c76b771e4958"
++
+ [[package]]
+ name = "ppv-lite86"
+ version = "0.2.21"
+@@ -608,6 +669,15 @@ dependencies = [
+  "unicode-ident",
+ ]
+ 
++[[package]]
++name = "quick-xml"
++version = "0.42.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "41b1177fdf999d2321d3fb46ff47159d9c1fb9ad66a4879f8c50a0b504615e9b"
++dependencies = [
++ "memchr",
++]
++
+ [[package]]
+ name = "quote"
+ version = "1.0.47"
+@@ -903,6 +973,36 @@ dependencies = [
+  "cfg-if",
+ ]
+ 
++[[package]]
++name = "time"
++version = "0.3.55"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "cdb87b95ec50ddfa440816d227a17b2ccbdda963a316a727fda0fc4334f7d134"
++dependencies = [
++ "deranged",
++ "num-conv",
++ "powerfmt",
++ "serde_core",
++ "time-core",
++ "time-macros",
++]
++
++[[package]]
++name = "time-core"
++version = "0.1.9"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "9e1c906769ad99c88eaa54e728060edef082f8e358ff32030cb7c7d315e81109"
++
++[[package]]
++name = "time-macros"
++version = "0.2.32"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "7e689342a48d2ea927c87ea50cabf8594854bf940e9310208848d680d668ed85"
++dependencies = [
++ "num-conv",
++ "time-core",
++]
++
+ [[package]]
+ name = "tokio"
+ version = "1.53.1"
+diff --git a/android-tv/app/build.gradle.kts b/android-tv/app/build.gradle.kts
+index be5f48d..8387758 100644
+--- a/android-tv/app/build.gradle.kts
++++ b/android-tv/app/build.gradle.kts
+@@ -66,5 +66,6 @@ dependencies {
+     implementation("androidx.appcompat:appcompat:1.7.0")
+     implementation("com.google.android.material:material:1.12.0")
+     implementation("androidx.leanback:leanback:1.0.0")
+-    implementation("dev.mobile:dadb:1.2.6")
++    // Self-signed certificate for the Wireless debugging (TLS) handshake; the version Shizuku ships.
++    implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
+ }
+diff --git a/android-tv/app/proguard-rules.pro b/android-tv/app/proguard-rules.pro
+index e7672d2..a5f973f 100644
+--- a/android-tv/app/proguard-rules.pro
++++ b/android-tv/app/proguard-rules.pro
+@@ -16,3 +16,10 @@
+ 
+ # Leanback / AndroidX
+ -dontwarn androidx.leanback.**
++
++# BouncyCastle: only the certificate builder is used
++-dontwarn org.bouncycastle.**
++-dontwarn javax.naming.**
++
++# Started by app_process from the ADB shell (LocalAdbDriver), not by Android.
++-keep class com.corvofeng.fakeatv.Injector { public static void main(java.lang.String[]); }
+diff --git a/android-tv/app/src/main/AndroidManifest.xml b/android-tv/app/src/main/AndroidManifest.xml
+index 967ca54..a35b130 100644
+--- a/android-tv/app/src/main/AndroidManifest.xml
++++ b/android-tv/app/src/main/AndroidManifest.xml
+@@ -20,6 +20,9 @@
+     <uses-permission android:name="android.permission.QUICKBOOT_POWERON" />
+     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
++    <!-- Granted by hand with pm grant; lets the app switch Wireless debugging back on after a reboot. -->
++    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"
++        tools:ignore="ProtectedPermissions" />
+ 
+     <application
+         android:allowBackup="true"
+diff --git a/android-tv/app/src/main/java/com/corvofeng/fakeatv/AdbTls.kt b/android-tv/app/src/main/java/com/corvofeng/fakeatv/AdbTls.kt
+new file mode 100644
+index 0000000..f468afd
+--- /dev/null
++++ b/android-tv/app/src/main/java/com/corvofeng/fakeatv/AdbTls.kt
+@@ -0,0 +1,370 @@
++// Adapted from Shizuku's ADB client (https://github.com/RikkaApps/Shizuku, v13.6.0,
++// manager/src/main/java/moe/shizuku/manager/adb), Copyright RikkaApps, Apache License 2.0.
++// Changes: one long-lived shell stream with a reader thread, the key kept in app-private files
++// instead of the Android Keystore, and a one-shot mDNS lookup of this device's own TLS port.
++package com.corvofeng.fakeatv
++
++import android.content.Context
++import android.net.nsd.NsdManager
++import android.net.nsd.NsdServiceInfo
++import android.util.Base64
++import android.util.Log
++import org.bouncycastle.asn1.x500.X500Name
++import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
++import org.bouncycastle.cert.X509v3CertificateBuilder
++import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder
++import java.io.ByteArrayInputStream
++import java.io.Closeable
++import java.io.DataInputStream
++import java.io.DataOutputStream
++import java.io.File
++import java.io.IOException
++import java.math.BigInteger
++import java.net.InetSocketAddress
++import java.net.NetworkInterface
++import java.net.Socket
++import java.nio.ByteBuffer
++import java.nio.ByteOrder
++import java.security.KeyFactory
++import java.security.KeyPairGenerator
++import java.security.Principal
++import java.security.PrivateKey
++import java.security.SecureRandom
++import java.security.cert.CertificateFactory
++import java.security.cert.X509Certificate
++import java.security.interfaces.RSAPrivateKey
++import java.security.interfaces.RSAPublicKey
++import java.security.spec.PKCS8EncodedKeySpec
++import java.security.spec.RSAKeyGenParameterSpec
++import java.security.spec.RSAPublicKeySpec
++import java.util.Date
++import java.util.Locale
++import java.util.concurrent.CountDownLatch
++import java.util.concurrent.Semaphore
++import java.util.concurrent.TimeUnit
++import javax.crypto.Cipher
++import javax.net.ssl.SSLContext
++import javax.net.ssl.SSLEngine
++import javax.net.ssl.SSLSocket
++import javax.net.ssl.X509ExtendedKeyManager
++import javax.net.ssl.X509ExtendedTrustManager
++
++private const val A_CNXN = 0x4e584e43
++private const val A_AUTH = 0x48545541
++private const val A_OPEN = 0x4e45504f
++private const val A_OKAY = 0x59414b4f
++private const val A_CLSE = 0x45534c43
++private const val A_WRTE = 0x45545257
++private const val A_STLS = 0x534C5453
++private const val A_VERSION = 0x01000000
++private const val A_MAXDATA = 4096
++private const val A_STLS_VERSION = 0x01000000
++private const val ADB_AUTH_TOKEN = 1
++private const val ADB_AUTH_SIGNATURE = 2
++private const val ADB_AUTH_RSAPUBLICKEY = 3
++
++/** The app's own ADB key: one RSA key for plain ADB auth and for the Wireless debugging TLS handshake. */
++class AdbKey(dir: File, private val name: String) {
++
++    private val privateKey: RSAPrivateKey
++    private val publicKey: RSAPublicKey
++    private val certificate: X509Certificate
++
++    init {
++        dir.mkdirs()
++        val file = File(dir, FILE_NAME)
++        val loaded = if (file.exists()) {
++            try {
++                KeyFactory.getInstance("RSA")
++                    .generatePrivate(PKCS8EncodedKeySpec(file.readBytes())) as RSAPrivateKey
++            } catch (e: Exception) {
++                null
++            }
++        } else null
++        privateKey = loaded ?: KeyPairGenerator.getInstance("RSA").run {
++            initialize(RSAKeyGenParameterSpec(2048, RSAKeyGenParameterSpec.F4))
++            generateKeyPair().private as RSAPrivateKey
++        }.also {
++            val tmp = File(dir, "tls_adbkey.tmp")
++            tmp.writeBytes(it.encoded)
++            tmp.renameTo(file)
++        }
++        publicKey = KeyFactory.getInstance("RSA")
++            .generatePublic(RSAPublicKeySpec(privateKey.modulus, RSAKeyGenParameterSpec.F4)) as RSAPublicKey
++
++        val signer = JcaContentSignerBuilder("SHA256withRSA").build(privateKey)
++        val cert = X509v3CertificateBuilder(
++            X500Name("CN=00"), BigInteger.ONE, Date(0), Date(2461449600 * 1000), Locale.ROOT,
++            X500Name("CN=00"), SubjectPublicKeyInfo.getInstance(publicKey.encoded)
++        ).build(signer)
++        certificate = CertificateFactory.getInstance("X.509")
++            .generateCertificate(ByteArrayInputStream(cert.encoded)) as X509Certificate
++    }
++
++    val adbPublicKey: ByteArray by lazy { publicKey.adbEncoded(name) }
++
++    fun sign(data: ByteArray?): ByteArray {
++        val cipher = Cipher.getInstance("RSA/ECB/NoPadding")
++        cipher.init(Cipher.ENCRYPT_MODE, privateKey)
++        cipher.update(PADDING)
++        return cipher.doFinal(data)
++    }
++
++    val sslContext: SSLContext by lazy {
++        SSLContext.getInstance("TLSv1.3").apply {
++            init(arrayOf(keyManager), arrayOf(trustManager), SecureRandom())
++        }
++    }
++
++    private val keyManager = object : X509ExtendedKeyManager() {
++        override fun chooseClientAlias(keyTypes: Array<out String>, issuers: Array<out Principal>?, socket: Socket?) =
++            if (keyTypes.contains("RSA")) "key" else null
++        override fun getCertificateChain(alias: String?) = if (alias == "key") arrayOf(certificate) else null
++        override fun getPrivateKey(alias: String?): PrivateKey? = if (alias == "key") privateKey else null
++        override fun getClientAliases(keyType: String?, issuers: Array<out Principal>?): Array<String>? = null
++        override fun getServerAliases(keyType: String, issuers: Array<out Principal>?): Array<String>? = null
++        override fun chooseServerAlias(keyType: String, issuers: Array<out Principal>?, socket: Socket?): String? = null
++    }
++
++    // The peer is this TV's own adbd on 127.0.0.1; adbd checks our certificate, not the other way round.
++    private val trustManager = object : X509ExtendedTrustManager() {
++        override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?, socket: Socket?) {}
++        override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?, engine: SSLEngine?) {}
++        override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
++        override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?, socket: Socket?) {}
++        override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?, engine: SSLEngine?) {}
++        override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
++        override fun getAcceptedIssuers(): Array<X509Certificate> = emptyArray()
++    }
++
++    companion object {
++        const val FILE_NAME = "tls_adbkey"
++
++        private val PADDING = byteArrayOf(
++            0x00, 0x01, *ByteArray(218) { -1 }, 0x00,
++            0x30, 0x21, 0x30, 0x09, 0x06, 0x05, 0x2b, 0x0e, 0x03, 0x02, 0x1a, 0x05, 0x00,
++            0x04, 0x14
++        )
++    }
++}
++
++/** One ADB connection holding one interactive shell, for writing `input keyevent` lines. */
++/**
++ * One ADB stream: an interactive shell by default, or another [service] such as
++ * `shell:logcat …`, whose output goes to [onOutput].
++ */
++class AdbShellConnection(
++    private val host: String,
++    val port: Int,
++    private val key: AdbKey,
++    private val service: String = "shell:",
++    private val onOutput: ((ByteArray) -> Unit)? = null,
++) : Closeable {
++
++    private lateinit var socket: Socket
++    private lateinit var input: DataInputStream
++    private lateinit var output: DataOutputStream
++    private val writeLock = Any()
++    private val credits = Semaphore(0)
++    private val localId = 1
++    @Volatile private var remoteId = 0
++
++    @Volatile
++    var isOpen = false
++        private set
++
++    /** [authTimeoutMs] covers the "Allow USB debugging?" prompt a new key gets on plain ADB. */
++    fun connect(authTimeoutMs: Int) {
++        val plain = Socket()
++        plain.tcpNoDelay = true
++        plain.connect(InetSocketAddress(host, port), 3000)
++        plain.soTimeout = authTimeoutMs
++        socket = plain
++        input = DataInputStream(plain.getInputStream())
++        output = DataOutputStream(plain.getOutputStream())
++
++        write(A_CNXN, A_VERSION, A_MAXDATA, "host::\u0000".toByteArray())
++        var message = read()
++        if (message.command == A_STLS) {
++            write(A_STLS, A_STLS_VERSION, 0, null)
++            val tls = key.sslContext.socketFactory.createSocket(plain, host, port, true) as SSLSocket
++            tls.soTimeout = authTimeoutMs
++            tls.startHandshake()
++            socket = tls
++            input = DataInputStream(tls.inputStream)
++            output = DataOutputStream(tls.outputStream)
++            message = read()
++        } else if (message.command == A_AUTH && message.arg0 == ADB_AUTH_TOKEN) {
++            write(A_AUTH, ADB_AUTH_SIGNATURE, 0, key.sign(message.data))
++            message = read()
++            if (message.command == A_AUTH) {
++                // Key not known yet: the TV now asks "Allow USB debugging?".
++                write(A_AUTH, ADB_AUTH_RSAPUBLICKEY, 0, key.adbPublicKey)
++                message = read()
++            }
++        }
++        if (message.command != A_CNXN) throw IOException("ADB did not accept the connection")
++
++        write(A_OPEN, localId, 0, "$service\u0000".toByteArray())
++        message = read()
++        if (message.command != A_OKAY) throw IOException("ADB refused to open $service")
++        remoteId = message.arg0
++        credits.release()
++        socket.soTimeout = 0
++        isOpen = true
++        Thread({ readLoop() }, "AdbShellReader").apply { isDaemon = true }.start()
++    }
++
++    fun sendLine(line: String) {
++        if (!isOpen) throw IOException("ADB shell is closed")
++        // adbd allows one unacknowledged write per stream.
++        if (!credits.tryAcquire(2, TimeUnit.SECONDS)) throw IOException("ADB shell did not acknowledge")
++        if (!isOpen) throw IOException("ADB shell is closed")
++        write(A_WRTE, localId, remoteId, line.toByteArray())
++    }
++
++    private fun readLoop() {
++        try {
++            while (isOpen) {
++                val message = read()
++                when (message.command) {
++                    A_OKAY -> credits.release()
++                    A_WRTE -> {
++                        onOutput?.invoke(message.data) // an interactive shell's echo is ignored
++                        write(A_OKAY, localId, remoteId, null)
++                    }
++                    A_CLSE -> break
++                }
++            }
++        } catch (e: Exception) {
++            if (isOpen) Log.w("AdbShellConnection", "ADB connection lost: ${e.message}")
++        }
++        close()
++    }
++
++    private fun write(command: Int, arg0: Int, arg1: Int, data: ByteArray?) {
++        val payload = data ?: ByteArray(0)
++        val buffer = ByteBuffer.allocate(24 + payload.size).order(ByteOrder.LITTLE_ENDIAN)
++        buffer.putInt(command)
++        buffer.putInt(arg0)
++        buffer.putInt(arg1)
++        buffer.putInt(payload.size)
++        buffer.putInt(payload.sumOf { it.toInt() and 0xff })
++        buffer.putInt(command.inv())
++        buffer.put(payload)
++        synchronized(writeLock) {
++            output.write(buffer.array())
++            output.flush()
++        }
++    }
++
++    private class Message(val command: Int, val arg0: Int, val data: ByteArray)
++
++    private fun read(): Message {
++        val header = ByteArray(24)
++        input.readFully(header)
++        val buffer = ByteBuffer.wrap(header).order(ByteOrder.LITTLE_ENDIAN)
++        val command = buffer.int
++        val arg0 = buffer.int
++        buffer.int // arg1
++        val length = buffer.int
++        buffer.int // checksum, no longer sent by current adbd
++        val magic = buffer.int
++        if (magic != command.inv() || length < 0 || length > 1024 * 1024) {
++            throw IOException("bad ADB message")
++        }
++        val data = ByteArray(length)
++        input.readFully(data)
++        return Message(command, arg0, data)
++    }
++
++    override fun close() {
++        isOpen = false
++        credits.release()
++        try {
++            socket.close()
++        } catch (_: Exception) {}
++    }
++}
++
++object AdbMdns {
++    /** Port of this device's own Wireless debugging service, or -1 if none shows up in time. */
++    fun findTlsPort(context: Context, timeoutMs: Long): Int {
++        val nsd = context.getSystemService(NsdManager::class.java) ?: return -1
++        val localAddresses = try {
++            NetworkInterface.getNetworkInterfaces().asSequence()
++                .flatMap { it.inetAddresses.asSequence() }
++                .mapNotNull { it.hostAddress }
++                .toSet()
++        } catch (e: Exception) {
++            emptySet()
++        }
++        val latch = CountDownLatch(1)
++        var port = -1
++
++        val listener = object : NsdManager.DiscoveryListener {
++            override fun onDiscoveryStarted(serviceType: String) {}
++            override fun onDiscoveryStopped(serviceType: String) {}
++            override fun onStartDiscoveryFailed(serviceType: String, errorCode: Int) = latch.countDown()
++            override fun onStopDiscoveryFailed(serviceType: String, errorCode: Int) {}
++            override fun onServiceLost(serviceInfo: NsdServiceInfo) {}
++            override fun onServiceFound(serviceInfo: NsdServiceInfo) {
++                @Suppress("DEPRECATION")
++                nsd.resolveService(serviceInfo, object : NsdManager.ResolveListener {
++                    override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {}
++                    override fun onServiceResolved(info: NsdServiceInfo) {
++                        if (info.host?.hostAddress in localAddresses) {
++                            port = info.port
++                            latch.countDown()
++                        }
++                    }
++                })
++            }
++        }
++
++        try {
++            nsd.discoverServices("_adb-tls-connect._tcp", NsdManager.PROTOCOL_DNS_SD, listener)
++            latch.await(timeoutMs, TimeUnit.MILLISECONDS)
++        } catch (e: Exception) {
++            Log.w("AdbMdns", "Wireless debugging lookup failed: ${e.message}")
++        } finally {
++            try {
++                nsd.stopServiceDiscovery(listener)
++            } catch (_: Exception) {}
++        }
++        return port
++    }
++}
++
++private const val ANDROID_PUBKEY_MODULUS_SIZE = 2048 / 8
++private const val ANDROID_PUBKEY_MODULUS_SIZE_WORDS = ANDROID_PUBKEY_MODULUS_SIZE / 4
++
++private fun BigInteger.toAdbEncoded(): IntArray {
++    // little-endian 32-bit words
++    val encoded = IntArray(ANDROID_PUBKEY_MODULUS_SIZE_WORDS)
++    val r32 = BigInteger.ZERO.setBit(32)
++    var tmp = this
++    for (i in 0 until ANDROID_PUBKEY_MODULUS_SIZE_WORDS) {
++        val out = tmp.divideAndRemainder(r32)
++        tmp = out[0]
++        encoded[i] = out[1].toInt()
++    }
++    return encoded
++}
++
++// The format adbd keeps in adb_keys (system/core/libcrypto_utils/android_pubkey.c).
++private fun RSAPublicKey.adbEncoded(name: String): ByteArray {
++    val r32 = BigInteger.ZERO.setBit(32)
++    val n0inv = modulus.remainder(r32).modInverse(r32).negate()
++    val r = BigInteger.ZERO.setBit(ANDROID_PUBKEY_MODULUS_SIZE * 8)
++    val rr = r.modPow(BigInteger.valueOf(2), modulus)
++
++    val buffer = ByteBuffer.allocate(524).order(ByteOrder.LITTLE_ENDIAN)
++    buffer.putInt(ANDROID_PUBKEY_MODULUS_SIZE_WORDS)
++    buffer.putInt(n0inv.toInt())
++    modulus.toAdbEncoded().forEach { buffer.putInt(it) }
++    rr.toAdbEncoded().forEach { buffer.putInt(it) }
++    buffer.putInt(publicExponent.toInt())
++
++    return Base64.encode(buffer.array(), Base64.NO_WRAP) + " $name\u0000".toByteArray()
++}
+diff --git a/android-tv/app/src/main/java/com/corvofeng/fakeatv/AtvAccessibilityService.kt b/android-tv/app/src/main/java/com/corvofeng/fakeatv/AtvAccessibilityService.kt
+index b6f5c82..0d937f3 100644
+--- a/android-tv/app/src/main/java/com/corvofeng/fakeatv/AtvAccessibilityService.kt
++++ b/android-tv/app/src/main/java/com/corvofeng/fakeatv/AtvAccessibilityService.kt
+@@ -1,21 +1,47 @@
+ package com.corvofeng.fakeatv
+ 
++import android.provider.Settings
+ import android.accessibilityservice.AccessibilityService
+ import android.accessibilityservice.GestureDescription
+ import android.content.Context
+ import android.content.Intent
+ import android.graphics.Path
+ import android.os.Build
++import android.os.Bundle
++import android.os.Handler
++import android.os.Looper
+ import android.util.DisplayMetrics
+ import android.util.Log
+ import android.view.WindowManager
+ import android.view.accessibility.AccessibilityEvent
+ import android.view.accessibility.AccessibilityNodeInfo
++import android.view.accessibility.AccessibilityWindowInfo
+ 
+ class AtvAccessibilityService : AccessibilityService() {
+ 
+     companion object {
+         private const val TAG = "AtvAccessibility"
++
++        // Draws its own keyboard; YouTubeSearchWatcher tells us when its search is showing.
++        private const val YOUTUBE = "com.google.android.youtube.tv"
++        // Cursor pixels per touch-surface unit (the surface is 1000 units wide).
++        private const val CURSOR_SPEED = 3.5f
++        // Rest the finger this long before sliding to drag (scroll) instead of moving the cursor.
++        private const val DRAG_REST_MS = 350L
++        private const val DRAG_MS = 400L
++        // Apps where the cursor comes on by itself: Netflix (the phone build here, which a D-pad barely moves),
++        // TV Bro (web pages scroll better with flicks than with its own D-pad pointer) and RuiPin's Settings panel
++        // (a touch layout whose lists don't scroll with the D-pad).
++        private val CURSOR_APPS = setOf("com.netflix.mediaclient", "com.phlox.tvwebbrowser", "com.rp.rpsettings")
++        // A slide shorter than this (and long enough) is a flick: it scrolls under the cursor instead of moving it.
++        private const val FLICK_MS = 300L
++        private const val FLICK_SWIPE_MS = 120L
++        // Windows that come and go over the app in front; they don't switch the cursor off.
++        private val OVERLAY_PACKAGES = setOf(
++            "android", "com.android.systemui", "com.gupta.dock", "com.fqcx.rptools", "com.rp.uhd",
++            "com.rp.rpsystemservice")
++        // How long a phone app gets to open its search box after the Search key.
++        private const val SEARCH_WAIT_MS = 1000L
+         var instance: AtvAccessibilityService? = null
+             private set
+ 
+@@ -67,8 +93,157 @@ class AtvAccessibilityService : AccessibilityService() {
+         }
+     }
+ 
++    private val handler = Handler(Looper.getMainLooper())
++    private val textFocusCheck = Runnable { checkTextFocus() }
++    private var textFocused = false
++    private var lastFocusDescription = ""
++    @Volatile private var foregroundPackage: String? = null
++    // Keyboard opened by hand (play/pause held) in an app that draws its own keyboard.
++    @Volatile private var manualKeyboardPackage: String? = null
++    @Volatile private var youTubeSearch = false
++    // What the ADB fallback has typed in the current keyboard session.
++    @Volatile var adbTypedText = ""
++
++    val isYouTubeInFront: Boolean
++        get() = foregroundPackage == YOUTUBE
++
++    /**
++     * Play/pause held: opens the iPhone keyboard in the app in front, or closes it again.
++     * Phone apps on the panel (YouTube, Netflix) keep their search icon out of D-pad reach, so it
++     * first presses Search, which opens their search box; the keyboard then opens by itself. If no
++     * text field shows up, it opens the keyboard by hand for apps that draw their own.
++     */
++    fun toggleKeyboard() {
++        handler.post {
++            when {
++                manualKeyboardPackage != null -> {
++                    manualKeyboardPackage = null
++                    checkTextFocus()
++                }
++                textFocused -> Unit
++                else -> {
++                    // Off the main thread: the key goes out over the ADB socket.
++                    Thread { KeyDispatcher.dispatchButton("siri") }.start()
++                    handler.postDelayed({
++                        checkTextFocus()
++                        if (!textFocused) {
++                            manualKeyboardPackage = foregroundPackage
++                            checkTextFocus()
++                        }
++                    }, SEARCH_WAIT_MS)
++                }
++            }
++        }
++    }
++
++    fun setYouTubeSearch(open: Boolean) {
++        if (youTubeSearch == open) return
++        youTubeSearch = open
++        handler.post { checkTextFocus() }
++    }
++
++    /** Back, Home, select or play/pause leave typing behind. */
++    fun endManualKeyboard() {
++        if (manualKeyboardPackage == null) return
++        handler.post {
++            manualKeyboardPackage = null
++            checkTextFocus()
++        }
++    }
++
+     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+-        // No-op
++        if (event?.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
++            event.packageName?.toString()?.let {
++                if (it != packageName) {
++                    foregroundPackage = it
++                    followApp(it)
++                }
++            }
++        }
++        when (event?.eventType) {
++            AccessibilityEvent.TYPE_VIEW_FOCUSED,
++            AccessibilityEvent.TYPE_VIEW_CLICKED,
++            AccessibilityEvent.TYPE_WINDOWS_CHANGED,
++            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
++            AccessibilityEvent.TYPE_VIEW_TEXT_SELECTION_CHANGED -> {
++                handler.removeCallbacks(textFocusCheck)
++                handler.postDelayed(textFocusCheck, 150)
++            }
++        }
++    }
++
++    // A focused editable field, or an on-screen keyboard, opens the iPhone keyboard.
++    private fun checkTextFocus() {
++        val node = try {
++            findFocus(AccessibilityNodeInfo.FOCUS_INPUT)
++        } catch (e: Exception) {
++            null
++        }
++        val editable = node?.isEditable == true
++        val imeShown = try {
++            windows.any { it.type == AccessibilityWindowInfo.TYPE_INPUT_METHOD }
++        } catch (e: Exception) {
++            false
++        }
++        if (manualKeyboardPackage != null && manualKeyboardPackage != foregroundPackage) {
++            manualKeyboardPackage = null
++        }
++        val manual = manualKeyboardPackage != null
++        val youTube = youTubeSearch && foregroundPackage == YOUTUBE
++        val focused = editable || imeShown || manual || youTube
++        val description = "pkg=${node?.packageName} class=${node?.className} editable=$editable keyboard=$imeShown manual=$manual youtube=$youTube"
++        if (description != lastFocusDescription) {
++            lastFocusDescription = description
++            Log.d(TAG, "Focus: $description")
++        }
++        if (focused) {
++            // The native side only announces a new session when focus starts.
++            AtvNative.nativeSetTextFocus(true, if (editable) currentText(node!!) else "")
++        } else if (textFocused) {
++            AtvNative.nativeSetTextFocus(false, "")
++        }
++        if (focused && !textFocused) adbTypedText = ""
++        if (focused != textFocused) {
++            Log.i(TAG, "Text field focus: $focused (editable=$editable, keyboard=$imeShown, manual=$manual, youtube=$youTube)")
++            textFocused = focused
++        }
++    }
++
++    private fun currentText(node: AccessibilityNodeInfo): String {
++        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && node.isShowingHintText) return ""
++        return node.text?.toString() ?: ""
++    }
++
++    /** Applies iPhone keyboard input to the focused field; false if there is no field it can set. */
++    fun applyText(insertion: String, deletionCount: Int, textToAssert: String?): Boolean {
++        val node = try {
++            findFocus(AccessibilityNodeInfo.FOCUS_INPUT)
++        } catch (e: Exception) {
++            null
++        } ?: return false
++        if (!node.isEditable) return false
++
++        val current = currentText(node)
++        val typed = insertion.replace("\n", "")
++        val newText = textToAssert
++            ?: (current.dropLast(deletionCount.coerceIn(0, current.length)) + typed)
++        if (newText != current) {
++            val args = Bundle().apply {
++                putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, newText)
++            }
++            if (!node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, args)) return false
++            val selection = Bundle().apply {
++                putInt(AccessibilityNodeInfo.ACTION_ARGUMENT_SELECTION_START_INT, newText.length)
++                putInt(AccessibilityNodeInfo.ACTION_ARGUMENT_SELECTION_END_INT, newText.length)
++            }
++            node.performAction(AccessibilityNodeInfo.ACTION_SET_SELECTION, selection)
++        }
++        if (insertion.contains('\n')) {
++            val submitted = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R &&
++                node.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_IME_ENTER.id)
++            if (!submitted) LocalAdbDriver.sendKey("enter")
++        }
++        return true
+     }
+ 
+     override fun onInterrupt() {
+@@ -77,6 +252,9 @@ class AtvAccessibilityService : AccessibilityService() {
+ 
+     override fun onDestroy() {
+         super.onDestroy()
++        handler.removeCallbacks(textFocusCheck)
++        cursor?.hide()
++        if (textFocused) AtvNative.nativeSetTextFocus(false, "")
+         instance = null
+         Log.i(TAG, "AtvAccessibilityService destroyed")
+     }
+@@ -164,16 +342,117 @@ class AtvAccessibilityService : AccessibilityService() {
+         }
+     }
+ 
++    // Cursor mode: the iPhone's touch surface moves an on-screen cursor instead of the D-pad.
++    private var cursor: CursorOverlay? = null
++    @Volatile var cursorMode = false
++        private set
++    private var touchDownAt = 0L
++    private var flickFromX = 0f
++    private var flickFromY = 0f
++    // The cursor was switched on because Netflix came to the front (not with the TV button).
++    private var autoCursor = false
++    private var touchMoved = false
++    private var dragFrom: Pair<Float, Float>? = null
++
++    /** A cursor app in front: cursor on. Another app's screen: back to the D-pad, if it was switched on that way. */
++    private fun followApp(pkg: String) {
++        if (pkg in CURSOR_APPS) {
++            if (!cursorMode) {
++                AtvNative.nativeSetTrackpadMode(true)
++                setCursorMode(true, auto = true)
++            }
++        } else if (autoCursor && pkg !in OVERLAY_PACKAGES && pkg != currentKeyboardPackage()) {
++            AtvNative.nativeSetTrackpadMode(false)
++            setCursorMode(false)
++        }
++    }
++
++    private fun currentKeyboardPackage(): String? =
++        Settings.Secure.getString(contentResolver, Settings.Secure.DEFAULT_INPUT_METHOD)?.substringBefore('/')
++
++    /** TV button held on the iPhone (or Netflix in front, [auto]): cursor on or off. */
++    fun setCursorMode(on: Boolean, auto: Boolean = false) {
++        autoCursor = on && auto
++        handler.post {
++            cursorMode = on
++            val overlay = cursor ?: CursorOverlay(this, screenHeight / 30).also { cursor = it }
++            try {
++                if (on) overlay.show(pointerX, pointerY) else overlay.hide()
++            } catch (e: Exception) {
++                Log.w(TAG, "Cursor overlay failed: ${e.message}")
++            }
++            Log.i(TAG, "Cursor mode ${if (on) "on" else "off"}")
++        }
++    }
++
++    /**
++     * Touch surface in cursor mode. Sliding moves the cursor; a quick flick scrolls what is under
++     * the cursor in that direction (the cursor stays put); resting the finger for a moment before
++     * sliding drags instead, which also moves sliders.
++     */
+     fun handleTouch(dx: Double, dy: Double, phase: Int) {
+-        if (phase == 2) { // Moved
+-            val sensitivity = 1.5f
+-            pointerX = (pointerX + dx.toFloat() * sensitivity).coerceIn(0f, screenWidth.toFloat())
+-            pointerY = (pointerY + dy.toFloat() * sensitivity).coerceIn(0f, screenHeight.toFloat())
++        handler.post {
++            when (phase) {
++                1 -> { // Began
++                    touchDownAt = android.os.SystemClock.uptimeMillis()
++                    touchMoved = false
++                    dragFrom = null
++                    flickFromX = pointerX
++                    flickFromY = pointerY
++                }
++                2 -> { // Moved
++                    if (!touchMoved) {
++                        touchMoved = true
++                        if (android.os.SystemClock.uptimeMillis() - touchDownAt >= DRAG_REST_MS) {
++                            dragFrom = pointerX to pointerY
++                        }
++                    }
++                    pointerX = (pointerX + dx.toFloat() * CURSOR_SPEED).coerceIn(0f, screenWidth - 1f)
++                    pointerY = (pointerY + dy.toFloat() * CURSOR_SPEED).coerceIn(0f, screenHeight - 1f)
++                    cursor?.moveTo(pointerX, pointerY)
++                }
++                4 -> { // Ended
++                    if (dragFrom == null && touchMoved) flick()
++                    dragFrom?.let { (x, y) ->
++                        if (Math.hypot((pointerX - x).toDouble(), (pointerY - y).toDouble()) > screenHeight / 40.0) {
++                            touchAt(x, y, pointerX, pointerY, DRAG_MS)
++                        }
++                    }
++                    dragFrom = null
++                }
++            }
+         }
+     }
+ 
++    /** A quick slide: put the cursor back where it started and swipe from there; the content follows the finger. */
++    private fun flick() {
++        val elapsed = android.os.SystemClock.uptimeMillis() - touchDownAt
++        val dx = pointerX - flickFromX
++        val dy = pointerY - flickFromY
++        val distance = Math.hypot(dx.toDouble(), dy.toDouble()).toFloat()
++        if (elapsed > FLICK_MS || distance < screenHeight / 20f) return
++        pointerX = flickFromX
++        pointerY = flickFromY
++        cursor?.moveTo(pointerX, pointerY)
++        val length = (distance * 1.5f).coerceIn(screenHeight / 6f, screenHeight / 2.5f)
++        val horizontal = Math.abs(dx) >= Math.abs(dy)
++        val endX = if (horizontal) pointerX + Math.signum(dx) * length else pointerX
++        val endY = if (horizontal) pointerY else pointerY + Math.signum(dy) * length
++        touchAt(pointerX, pointerY, endX.coerceIn(0f, screenWidth - 1f), endY.coerceIn(0f, screenHeight - 1f),
++            FLICK_SWIPE_MS)
++    }
++
+     fun handleMouseClick() {
+-        tap(pointerX, pointerY)
++        handler.post { if (dragFrom == null) touchAt(pointerX, pointerY, pointerX, pointerY, 0) }
++    }
++
++    // Through the ADB injector (lands like a finger); Accessibility gestures if that is down.
++    private fun touchAt(x1: Float, y1: Float, x2: Float, y2: Float, durationMs: Long) {
++        Thread {
++            if (!LocalAdbDriver.sendTouch(x1, y1, x2, y2, durationMs)) {
++                handler.post { if (durationMs <= 0) tap(x1, y1) else swipe(x1, y1, x2, y2, durationMs) }
++            }
++        }.start()
+     }
+ 
+     private fun tap(x: Float, y: Float) {
+diff --git a/android-tv/app/src/main/java/com/corvofeng/fakeatv/AtvNative.kt b/android-tv/app/src/main/java/com/corvofeng/fakeatv/AtvNative.kt
+index 5dd0e09..3e50c7b 100644
+--- a/android-tv/app/src/main/java/com/corvofeng/fakeatv/AtvNative.kt
++++ b/android-tv/app/src/main/java/com/corvofeng/fakeatv/AtvNative.kt
+@@ -14,6 +14,7 @@ object AtvNative {
+         fun onTouch(dx: Double, dy: Double, phase: Int)
+         fun onAudio(volume: Double, muted: Boolean)
+         fun onEvent(kind: String, detail: String)
++        fun onTextInput(insertion: String, deletionCount: Int, textToAssert: String?)
+     }
+ 
+     external fun nativeStartServer(
+@@ -22,9 +23,14 @@ object AtvNative {
+         deviceId: String,
+         serverId: String,
+         localIp: String,
++        privateKeyHex: String,
+         callback: Callback
+     ): Boolean
+ 
+     external fun nativeStopServer()
+     external fun nativeIsRunning(): Boolean
++    external fun nativeSetTextFocus(focused: Boolean, text: String)
++    /** Cursor (true) or D-pad on the touch surface, for now; the TV button still toggles it. */
++    external fun nativeSetTrackpadMode(mouse: Boolean)
++    external fun nativeBonjourServices(): String
+ }
+diff --git a/android-tv/app/src/main/java/com/corvofeng/fakeatv/AtvService.kt b/android-tv/app/src/main/java/com/corvofeng/fakeatv/AtvService.kt
+index ef061ed..7acd286 100644
+--- a/android-tv/app/src/main/java/com/corvofeng/fakeatv/AtvService.kt
++++ b/android-tv/app/src/main/java/com/corvofeng/fakeatv/AtvService.kt
+@@ -11,6 +11,7 @@ import android.content.Intent
+ import android.content.IntentFilter
+ import android.content.pm.ServiceInfo
+ import android.net.ConnectivityManager
++import android.net.LinkProperties
+ import android.net.Network
+ import android.net.wifi.WifiManager
+ import android.os.Build
+@@ -18,6 +19,7 @@ import android.os.IBinder
+ import android.os.PowerManager
+ import android.util.Log
+ import androidx.core.app.NotificationCompat
++import androidx.core.content.ContextCompat
+ 
+ class AtvService : Service(), AtvNative.Callback {
+ 
+@@ -40,13 +42,18 @@ class AtvService : Service(), AtvNative.Callback {
+         @Volatile
+         var isRunning = false
+             private set
++
++        private val CONTROL_ID = Regex("\"_i\":\\s*\"([A-Za-z_]+)\"")
+     }
+ 
+     private var multicastLock: WifiManager.MulticastLock? = null
++    private var wifiLock: WifiManager.WifiLock? = null
+     private var wakeLock: PowerManager.WakeLock? = null
+ 
+     private var currentName: String? = null
+     private var currentPin: Int = 1111
++    @Volatile
++    private var currentIp: String? = null
+ 
+     @Volatile
+     private var isStopping = false
+@@ -104,11 +111,18 @@ class AtvService : Service(), AtvNative.Callback {
+                 val callback = object : ConnectivityManager.NetworkCallback() {
+                     override fun onAvailable(network: Network) {
+                         Log.i(TAG, "Network became available on Android TV")
++                        LocalAdbDriver.initAsync()
+                         if (!isRunning && !isStopping) {
+                             val name = currentName ?: DeviceInfo.getDeviceName(this@AtvService)
+                             startServer(name, currentPin)
++                        } else {
++                            restartIfIpChanged()
+                         }
+                     }
++
++                    override fun onLinkPropertiesChanged(network: Network, linkProperties: LinkProperties) {
++                        restartIfIpChanged()
++                    }
+                 }
+                 cm.registerDefaultNetworkCallback(callback)
+                 networkCallback = callback
+@@ -142,7 +156,8 @@ class AtvService : Service(), AtvNative.Callback {
+                 addAction(Intent.ACTION_USER_PRESENT)
+                 addAction(ACTION_SET_MENU_BINDING)
+             }
+-            registerReceiver(receiver, filter)
++            // Android 14 refuses dynamic receivers without an export flag; nothing outside the app needs it.
++            ContextCompat.registerReceiver(this, receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED)
+             screenReceiver = receiver
+         } catch (e: Exception) {
+             Log.w(TAG, "Failed to register screen receiver", e)
+@@ -202,6 +217,17 @@ class AtvService : Service(), AtvNative.Callback {
+             }
+         }
+ 
++        // Keep Wi-Fi out of power save: on the DPL panel's Wi-Fi chip power save drops incoming multicast, so the
++        // iPhone's Bonjour queries never arrived and the Remote stopped listing the TV.
++        if (wifiLock == null || !wifiLock!!.isHeld) {
++            val wm = applicationContext.getSystemService(Context.WIFI_SERVICE) as? WifiManager
++            @Suppress("DEPRECATION")
++            wifiLock = wm?.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "FakeAtv:WifiLock")?.apply {
++                setReferenceCounted(false)
++                acquire()
++            }
++        }
++
+         // Acquire WakeLock to keep networking responsive (indefinite for TV)
+         if (wakeLock == null || !wakeLock!!.isHeld) {
+             val pm = getSystemService(Context.POWER_SERVICE) as? PowerManager
+@@ -212,6 +238,7 @@ class AtvService : Service(), AtvNative.Callback {
+ 
+         val deviceId = DeviceInfo.getDeviceId(this)
+         val serverId = DeviceInfo.getServerIdentifier(this, deviceId)
++        val privateKeyHex = DeviceInfo.getPrivateKeySeed(this)
+ 
+         if (startThread?.isAlive == true) {
+             return
+@@ -226,10 +253,16 @@ class AtvService : Service(), AtvNative.Callback {
+                 val hasValidIp = !localIp.isNullOrBlank()
+ 
+                 if (hasValidIp) {
++                    // Wi-Fi is up: (re)connect local ADB, over Wireless debugging if 5555 is closed.
++                    LocalAdbDriver.initAsync()
+                     Log.i(TAG, "Attempt $attempts: starting native server with IP $localIp (Name: $name, PIN: $pin)")
+-                    val started = AtvNative.nativeStartServer(name, pin, deviceId, serverId, localIp!!, this)
++                    val started = AtvNative.nativeStartServer(name, pin, deviceId, serverId, localIp!!, privateKeyHex, this)
+                     if (started) {
+                         isRunning = true
++                        currentIp = localIp
++                        Bonjour.register(this, name)
++                        // A new server starts with D-pad swipes.
++                        AtvAccessibilityService.instance?.setCursorMode(false)
+                         broadcast("ServerStatus", "running")
+                         Log.i(TAG, "Native server started successfully on attempt $attempts with IP $localIp")
+                         break
+@@ -257,6 +290,15 @@ class AtvService : Service(), AtvNative.Callback {
+         }
+     }
+ 
++    // No restart when the address changes: the server listens on every address, and Android's
++    // Bonjour responder announces the current ones. (The panel's Ethernet and Wi-Fi take turns as
++    // the default network, and each restart dropped the iPhone's session.)
++    private fun restartIfIpChanged() {
++        val ip = DeviceInfo.getLocalIpAddress(this) ?: return
++        if (ip != currentIp) Log.i(TAG, "Default network address is now $ip")
++        currentIp = ip
++    }
++
+     @Synchronized
+     private fun stopServer() {
+         isStopping = true
+@@ -265,12 +307,16 @@ class AtvService : Service(), AtvNative.Callback {
+ 
+         if (!isRunning) return
+         Log.i(TAG, "Stopping native server")
++        Bonjour.unregister(this)
+         AtvNative.nativeStopServer()
+         isRunning = false
+ 
+         multicastLock?.let {
+             if (it.isHeld) it.release()
+         }
++        wifiLock?.let {
++            if (it.isHeld) it.release()
++        }
+         wakeLock?.let {
+             if (it.isHeld) it.release()
+         }
+@@ -279,12 +325,38 @@ class AtvService : Service(), AtvNative.Callback {
+ 
+     override fun onButton(name: String) {
+         val lowerName = name.lowercase().trim()
++        if (lowerName == "keyboard") {
++            // Play/pause held: no key goes to the TV.
++            AtvAccessibilityService.instance?.toggleKeyboard()
++            Log.i(TAG, "onButton: keyboard (play/pause held)")
++            broadcast("Button", "keyboard")
++            return
++        }
++        if (lowerName == "dock") {
++            // Back held: Gupta's TV dock opens and takes the remote's focus (in cursor mode it only opens,
++            // and the cursor clicks it). No Back goes to the TV.
++            val cursor = AtvAccessibilityService.instance?.cursorMode == true
++            sendBroadcast(Intent("com.gupta.dock.action.FOCUS_DOCK")
++                .setPackage("com.gupta.dock")
++                .putExtra("cursor", cursor))
++            Log.i(TAG, "onButton: dock (Back held, cursor=$cursor)")
++            broadcast("Button", "dock")
++            return
++        }
++        if (lowerName == "select" && AtvAccessibilityService.instance?.cursorMode == true) {
++            // A firm press on the touch surface clicks at the cursor too.
++            AtvAccessibilityService.instance?.handleMouseClick()
++            return
++        }
+         val isMapped = KeyDispatcher.menuBindingButton.isNotBlank() &&
+                 KeyDispatcher.menuBindingButton != "none" &&
+                 KeyDispatcher.menuBindingButton.equals(lowerName, ignoreCase = true)
+ 
+         val display = if (isMapped) "$name -> MENU" else name
+         val engine = KeyDispatcher.dispatchButton(name)
++        when (lowerName) {
++            "menu", "home", "select", "play_pause" -> AtvAccessibilityService.instance?.endManualKeyboard()
++        }
+         Log.i(TAG, "onButton: $display via [$engine]")
+         broadcast("Button", "$display [$engine]")
+     }
+@@ -293,15 +365,53 @@ class AtvService : Service(), AtvNative.Callback {
+         AtvAccessibilityService.instance?.handleTouch(dx, dy, phase)
+     }
+ 
++    override fun onTextInput(insertion: String, deletionCount: Int, textToAssert: String?) {
++        // Prefer setting the focused field's text through Accessibility (any language, exact
++        // result); fall back to typing over local ADB (ASCII only) for fields it cannot set.
++        val a11y = AtvAccessibilityService.instance
++        val summary = "insert ${insertion.length}, delete $deletionCount, assert ${textToAssert?.length ?: "-"}"
++        if (a11y?.applyText(insertion, deletionCount, textToAssert) == true) {
++            Log.i(TAG, "Keyboard: $summary -> field set")
++            return
++        }
++        // No field to set (an app that draws its own keyboard): type the difference between what
++        // was typed so far and what the iPhone now shows. Never Delete on an empty box, which
++        // some apps (YouTube) take as Back.
++        val typed = a11y?.adbTypedText ?: ""
++        val target = textToAssert?.replace("\n", "")
++            ?: (typed.dropLast(deletionCount.coerceIn(0, typed.length)) + insertion.replace("\n", ""))
++        val keep = typed.commonPrefixWith(target).length
++        val deletes = typed.length - keep
++        val added = target.substring(keep)
++        val youTube = a11y?.isYouTubeInFront == true
++        // YouTube's search opens with the highlight on its left menu, where letters do nothing;
++        // one Right moves it into the search panel (inside the panel it only moves one key).
++        if (youTube && keep == 0 && added.isNotEmpty()) LocalAdbDriver.sendKey("right")
++        LocalAdbDriver.sendDeletes(deletes)
++        LocalAdbDriver.sendText(added)
++        a11y?.adbTypedText = target
++        // In YouTube, Enter presses the highlighted key or the mic, so return does nothing there.
++        if (insertion.contains('\n') && !youTube) LocalAdbDriver.sendKey("enter")
++        Log.i(TAG, "Keyboard: $summary -> ADB delete $deletes, type ${added.length}")
++    }
++
+     override fun onAudio(volume: Double, muted: Boolean) {
+         broadcast("Audio", "vol=$volume muted=$muted")
+     }
+ 
+     override fun onEvent(kind: String, detail: String) {
+-        Log.i(TAG, "onEvent: $kind $detail")
++        // Control messages carry the iPhone's iCloud account ID; keep them out of the system log.
++        if (kind != "ControlMessage") {
++            Log.i(TAG, "onEvent: $kind $detail")
++        } else {
++            CONTROL_ID.find(detail)?.let { Log.d(TAG, "control: ${it.groupValues[1]}") }
++        }
+         if (kind == "MouseClick") {
+             AtvAccessibilityService.instance?.handleMouseClick()
+         }
++        if (kind == "TrackpadMode") {
++            AtvAccessibilityService.instance?.setCursorMode(detail == "mouse")
++        }
+         broadcast("Event", "$kind: $detail")
+     }
+ 
+diff --git a/android-tv/app/src/main/java/com/corvofeng/fakeatv/Bonjour.kt b/android-tv/app/src/main/java/com/corvofeng/fakeatv/Bonjour.kt
+new file mode 100644
+index 0000000..8b9c0d0
+--- /dev/null
++++ b/android-tv/app/src/main/java/com/corvofeng/fakeatv/Bonjour.kt
+@@ -0,0 +1,313 @@
++package com.corvofeng.fakeatv
++
++import android.content.Context
++import android.util.Log
++import java.io.ByteArrayOutputStream
++import java.net.Inet4Address
++import java.net.InetAddress
++import java.net.InetSocketAddress
++import java.net.NetworkInterface
++import java.net.StandardProtocolFamily
++import java.net.StandardSocketOptions
++import java.nio.ByteBuffer
++import java.nio.channels.DatagramChannel
++import java.nio.channels.SelectionKey
++import java.nio.channels.Selector
++
++/**
++ * A small mDNS responder for the server's Bonjour services, on Wi-Fi over IPv4.
++ *
++ * On the DPL panel neither Android's own responder (NsdManager) nor the native mdns-sd library kept
++ * "Gupta's TV" in iPhones' Remote list: NsdManager answered iPhones' multicast queries only some of the
++ * time and handed out the panel's rotating temporary IPv6 addresses, and mdns-sd sent nothing on Wi-Fi.
++ * This responder answers every query for our names (multicast, QU and plain unicast), always with the
++ * current Wi-Fi IPv4 address, under a host name of its own, and announces the services at start and
++ * every [ANNOUNCE_MS] after that.
++ */
++object Bonjour {
++    private const val TAG = "Bonjour"
++    private const val PORT = 5353
++    private const val ANNOUNCE_MS = 60_000L
++    private const val REPORT_MS = 10 * 60_000L
++    private const val TTL_SERVICE = 4500
++    private const val TTL_HOST = 120
++    private const val TYPE_A = 1
++    private const val TYPE_PTR = 12
++    private const val TYPE_TXT = 16
++    private const val TYPE_SRV = 33
++    private const val TYPE_ANY = 255
++    private const val CACHE_FLUSH = 0x8000
++    private const val SERVICES = "_services._dns-sd._udp.local"
++    private val GROUP: InetAddress = InetAddress.getByName("224.0.0.251")
++    private val GROUP6: InetAddress = InetAddress.getByName("ff02::fb")
++
++    private class Service(val type: String, val instance: String, val port: Int, val txt: List<String>)
++
++    private data class Rec(val name: String, val type: Int, val ttl: Int, val rdata: ByteArray, val flush: Boolean = false) {
++        override fun equals(other: Any?) =
++            other is Rec && name == other.name && type == other.type && rdata.contentEquals(other.rdata)
++        override fun hashCode() = name.hashCode() * 31 + type
++    }
++
++    @Volatile private var running = false
++    private var sockets: List<DatagramChannel> = emptyList()
++
++    @Synchronized
++    fun register(context: Context, name: String) {
++        unregister(context)
++        val services = AtvNative.nativeBonjourServices().lines().filter { it.isNotBlank() }.map { line ->
++            val fields = line.split('\t')
++            val type = fields[0].trimEnd('.').removeSuffix(".local") + ".local"
++            Service(type, "$name.$type", fields[1].toInt(), fields.drop(2))
++        }
++        if (services.isEmpty()) return
++        // "Gupta's TV" -> "Guptas-TV-Remote.local": a host name of its own, not the generic Android.local.
++        val label = name.replace(' ', '-').filter { it.isLetterOrDigit() || it == '-' }.trim('-')
++        running = true
++        Thread({ serve(services, "$label-Remote.local") }, "bonjour").apply { isDaemon = true; start() }
++    }
++
++    @Synchronized
++    fun unregister(@Suppress("UNUSED_PARAMETER") context: Context) {
++        running = false
++        sockets.forEach { try { it.close() } catch (_: Exception) {} }
++        sockets = emptyList()
++    }
++
++    private fun serve(services: List<Service>, host: String) {
++        val wifi = wifiInterface()
++        // One IPv4 and one IPv6 socket, each joined on Wi-Fi: iPhones ask over both. (Java's default
++        // MulticastSocket is dual-stack on Android, and its join of the IPv4 group never delivered IPv4 queries.)
++        // Both answer with the IPv4 address only.
++        val selector = Selector.open()
++        val opened = mutableListOf<DatagramChannel>()
++        for ((family, any, group) in listOf(
++            Triple(StandardProtocolFamily.INET, InetAddress.getByName("0.0.0.0"), GROUP),
++            Triple(StandardProtocolFamily.INET6, InetAddress.getByName("::"), GROUP6),
++        )) {
++            try {
++                val channel = DatagramChannel.open(family).apply {
++                    setOption(StandardSocketOptions.SO_REUSEADDR, true)
++                    bind(InetSocketAddress(any, PORT))
++                    setOption(StandardSocketOptions.IP_MULTICAST_TTL, 255)
++                    if (wifi != null) {
++                        setOption(StandardSocketOptions.IP_MULTICAST_IF, wifi)
++                        join(group, wifi)
++                    }
++                    configureBlocking(false)
++                }
++                channel.register(selector, SelectionKey.OP_READ, group)
++                opened += channel
++            } catch (e: Exception) {
++                Log.w(TAG, "Could not open the $family mDNS socket: $e")
++            }
++        }
++        if (opened.isEmpty()) {
++            selector.close()
++            return
++        }
++        synchronized(this) { sockets = opened }
++        Log.i(TAG, "Answering for ${services.map { it.instance }} as $host on ${wifi?.name ?: "default"}")
++        var nextAnnounce = 0L
++        var announced = 0
++        var received = 0
++        var answered = 0
++        var nextReport = System.currentTimeMillis() + REPORT_MS
++        val buffer = ByteBuffer.allocate(9000)
++        while (running) {
++            val now = System.currentTimeMillis()
++            if (now >= nextAnnounce) {
++                ipv4()?.let { ip ->
++                    val bytes = message(0, announcement(services, host, ip), false)
++                    for (key in selector.keys()) send(key.channel() as DatagramChannel, bytes, key.attachment() as InetAddress, PORT)
++                }
++                announced++
++                // Three announcements a second apart, then one a minute.
++                nextAnnounce = now + if (announced < 3) 1000 else ANNOUNCE_MS
++            }
++            if (now >= nextReport) {
++                Log.i(TAG, "Last ${REPORT_MS / 60_000} min: $received queries received, $answered answered")
++                received = 0; answered = 0; nextReport = now + REPORT_MS
++            }
++            try {
++                if (selector.select(1000) == 0) continue
++                val ready = selector.selectedKeys().toList()
++                selector.selectedKeys().clear()
++                for (key in ready) {
++                    val sock = key.channel() as DatagramChannel
++                    val group = key.attachment() as InetAddress
++                    while (true) {
++                        buffer.clear()
++                        val from = sock.receive(buffer) as? InetSocketAddress ?: break
++                        buffer.flip()
++                        val data = ByteArray(buffer.remaining()).also { buffer.get(it) }
++                        received++
++                        try {
++                            if (answer(sock, group, data, from, services, host)) answered++
++                        } catch (e: Exception) {
++                            Log.d(TAG, "Ignored an mDNS packet: $e")
++                        }
++                    }
++                }
++            } catch (e: Exception) {
++                if (running) Log.w(TAG, "mDNS receive failed: $e")
++                break
++            }
++        }
++        try { selector.close() } catch (_: Exception) {}
++        opened.forEach { try { it.close() } catch (_: Exception) {} }
++    }
++
++    /** Answers a query that asks about any of our names; ignores responses and everything else. */
++    private fun answer(sock: DatagramChannel, group: InetAddress, data: ByteArray, from: InetSocketAddress,
++                       services: List<Service>, host: String): Boolean {
++        if (data.size < 12 || (data[2].toInt() and 0x80) != 0) return false   // too short, or a response
++        val ip = ipv4() ?: return false
++        val records = LinkedHashSet<Rec>()
++        val asked = mutableListOf<String>()
++        var unicast = false
++        var offset = 12
++        repeat(u16(data, 4)) {
++            val (qname, next) = readName(data, offset)
++            val qtype = u16(data, next)
++            if ((u16(data, next + 2) and 0x8000) != 0) unicast = true
++            offset = next + 4
++            val name = qname.lowercase()
++            val any = qtype == TYPE_ANY
++            for (s in services) {
++                if (name == s.type.lowercase() && (qtype == TYPE_PTR || any)) {
++                    records += ptr(s); records += srv(s, host); records += txt(s); records += a(host, ip)
++                    asked += s.type
++                } else if (name == s.instance.lowercase() && (qtype == TYPE_SRV || qtype == TYPE_TXT || any)) {
++                    records += srv(s, host); records += txt(s); records += a(host, ip)
++                    asked += s.instance
++                } else if (name == SERVICES && (qtype == TYPE_PTR || any)) {
++                    records += Rec(SERVICES, TYPE_PTR, TTL_SERVICE, nameBytes(s.type))
++                }
++            }
++            if (name == host.lowercase() && (qtype == TYPE_A || any)) {
++                records += a(host, ip); asked += host
++            }
++        }
++        if (records.isEmpty()) return false
++        when {
++            // A plain DNS query sent to port 5353 (dig and the like): reply to its port with its ID.
++            from.port != PORT -> send(sock, message(u16(data, 0), records.toList(), true), from.address, from.port)
++            // "QU" questions want a unicast reply.
++            unicast -> send(sock, message(0, records.toList(), false), from.address, PORT)
++            else -> send(sock, message(0, records.toList(), false), group, PORT)
++        }
++        if (asked.isNotEmpty()) Log.i(TAG, "Answered ${from.address.hostAddress} for ${asked.distinct()}")
++        return true
++    }
++
++    private fun ptr(s: Service) = Rec(s.type, TYPE_PTR, TTL_SERVICE, nameBytes(s.instance))
++    private fun srv(s: Service, host: String) = Rec(s.instance, TYPE_SRV, TTL_HOST,
++        byteArrayOf(0, 0, 0, 0, (s.port shr 8).toByte(), s.port.toByte()) + nameBytes(host), flush = true)
++    private fun a(host: String, ip: Inet4Address) = Rec(host, TYPE_A, TTL_HOST, ip.address, flush = true)
++    private fun txt(s: Service): Rec {
++        val out = ByteArrayOutputStream()
++        for (entry in s.txt.ifEmpty { listOf("") }) {
++            val bytes = entry.toByteArray(Charsets.UTF_8).let { if (it.size > 255) it.copyOf(255) else it }
++            out.write(bytes.size); out.write(bytes)
++        }
++        return Rec(s.instance, TYPE_TXT, TTL_SERVICE, out.toByteArray(), flush = true)
++    }
++
++    private fun announcement(services: List<Service>, host: String, ip: Inet4Address): List<Rec> {
++        val records = mutableListOf<Rec>()
++        for (s in services) {
++            records += ptr(s); records += srv(s, host); records += txt(s)
++            records += Rec(SERVICES, TYPE_PTR, TTL_SERVICE, nameBytes(s.type))
++        }
++        records += a(host, ip)
++        return records
++    }
++
++    /** A response with every record in the answer section. */
++    private fun message(id: Int, records: List<Rec>, legacy: Boolean): ByteArray {
++        val out = ByteArrayOutputStream()
++        fun u16(v: Int) { out.write(v shr 8 and 0xFF); out.write(v and 0xFF) }
++        u16(id); u16(0x8400); u16(0); u16(records.size); u16(0); u16(0)
++        for (r in records) {
++            out.write(nameBytes(r.name))
++            u16(r.type)
++            // Replies to plain DNS queries carry no cache-flush bit and short TTLs (RFC 6762 §6.7).
++            u16(1 or if (r.flush && !legacy) CACHE_FLUSH else 0)
++            val ttl = if (legacy) minOf(r.ttl, 10) else r.ttl
++            u16(ttl ushr 16); u16(ttl and 0xFFFF)
++            u16(r.rdata.size)
++            out.write(r.rdata)
++        }
++        return out.toByteArray()
++    }
++
++    private fun send(sock: DatagramChannel, bytes: ByteArray, to: InetAddress, port: Int) {
++        try {
++            sock.send(ByteBuffer.wrap(bytes), InetSocketAddress(to, port))
++        } catch (e: Exception) {
++            Log.w(TAG, "mDNS send to ${to.hostAddress} failed: $e")
++        }
++    }
++
++    private fun nameBytes(name: String): ByteArray {
++        val out = ByteArrayOutputStream()
++        for (label in splitName(name)) {
++            val bytes = label.toByteArray(Charsets.UTF_8)
++            out.write(bytes.size); out.write(bytes)
++        }
++        out.write(0)
++        return out.toByteArray()
++    }
++
++    /** "Gupta's TV._companion-link._tcp.local" -> ["Gupta's TV", "_companion-link", "_tcp", "local"]. */
++    private fun splitName(name: String): List<String> {
++        val service = Regex("^(.+?)\\.(_[^.]+\\._(?:tcp|udp)\\.local)$").find(name)
++        return if (service != null && !service.groupValues[1].startsWith("_")) {
++            listOf(service.groupValues[1]) + service.groupValues[2].split('.')
++        } else {
++            name.split('.')
++        }
++    }
++
++    private fun readName(data: ByteArray, start: Int): Pair<String, Int> {
++        val labels = mutableListOf<String>()
++        var offset = start
++        var end = -1
++        var jumps = 0
++        while (true) {
++            val len = data[offset].toInt() and 0xFF
++            when {
++                len == 0 -> { offset++; break }
++                (len and 0xC0) == 0xC0 -> {
++                    if (end < 0) end = offset + 2
++                    offset = ((len and 0x3F) shl 8) or (data[offset + 1].toInt() and 0xFF)
++                    require(++jumps <= 20) { "name loop" }
++                }
++                else -> {
++                    labels += String(data, offset + 1, len, Charsets.UTF_8)
++                    offset += 1 + len
++                }
++            }
++        }
++        return labels.joinToString(".") to (if (end >= 0) end else offset)
++    }
++
++    private fun u16(data: ByteArray, at: Int) = ((data[at].toInt() and 0xFF) shl 8) or (data[at + 1].toInt() and 0xFF)
++
++    private fun wifiInterface(): NetworkInterface? = try {
++        NetworkInterface.getByName("wlan0")
++            ?: NetworkInterface.getNetworkInterfaces().toList().firstOrNull { nif ->
++                nif.isUp && !nif.isLoopback && nif.inetAddresses.toList().any { it is Inet4Address && it.isSiteLocalAddress }
++            }
++    } catch (_: Exception) {
++        null
++    }
++
++    /** The Wi-Fi interface's current IPv4 address, read fresh for every answer. */
++    private fun ipv4(): Inet4Address? = try {
++        wifiInterface()?.inetAddresses?.toList()?.filterIsInstance<Inet4Address>()?.firstOrNull { !it.isLoopbackAddress }
++    } catch (_: Exception) {
++        null
++    }
++}
+diff --git a/android-tv/app/src/main/java/com/corvofeng/fakeatv/CursorOverlay.kt b/android-tv/app/src/main/java/com/corvofeng/fakeatv/CursorOverlay.kt
+new file mode 100644
+index 0000000..72eae58
+--- /dev/null
++++ b/android-tv/app/src/main/java/com/corvofeng/fakeatv/CursorOverlay.kt
+@@ -0,0 +1,88 @@
++package com.corvofeng.fakeatv
++
++import android.content.Context
++import android.graphics.Canvas
++import android.graphics.Color
++import android.graphics.Paint
++import android.graphics.Path
++import android.graphics.PixelFormat
++import android.view.Gravity
++import android.view.View
++import android.view.WindowManager
++
++/**
++ * The cursor arrow for cursor mode (TV button held on the iPhone remote). Drawn as an
++ * Accessibility overlay that never takes touches, so taps at its tip reach the app below.
++ * Call from the main thread.
++ */
++class CursorOverlay(private val context: Context, private val size: Int) {
++    private val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
++    private var view: View? = null
++    private val params = WindowManager.LayoutParams(
++        size, size,
++        WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
++        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
++            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
++            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
++            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
++        PixelFormat.TRANSLUCENT
++    ).apply { gravity = Gravity.TOP or Gravity.START }
++
++    val isShown: Boolean
++        get() = view != null
++
++    fun show(x: Float, y: Float) {
++        if (view == null) {
++            val arrow = ArrowView(context)
++            place(x, y)
++            wm.addView(arrow, params)
++            view = arrow
++        } else {
++            moveTo(x, y)
++        }
++    }
++
++    fun moveTo(x: Float, y: Float) {
++        val v = view ?: return
++        place(x, y)
++        wm.updateViewLayout(v, params)
++    }
++
++    fun hide() {
++        view?.let { wm.removeView(it) }
++        view = null
++    }
++
++    // The arrow's tip is the view's top-left corner.
++    private fun place(x: Float, y: Float) {
++        params.x = x.toInt()
++        params.y = y.toInt()
++    }
++
++    private class ArrowView(context: Context) : View(context) {
++        private val fill = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE }
++        private val outline = Paint(Paint.ANTI_ALIAS_FLAG).apply {
++            color = Color.BLACK
++            style = Paint.Style.STROKE
++            strokeJoin = Paint.Join.ROUND
++        }
++        private val path = Path()
++
++        override fun onDraw(canvas: Canvas) {
++            val s = width.toFloat()
++            outline.strokeWidth = s / 16
++            val m = outline.strokeWidth
++            path.reset()
++            path.moveTo(m, m)
++            path.lineTo(m, s * 0.85f)
++            path.lineTo(s * 0.32f, s * 0.64f)
++            path.lineTo(s * 0.5f, s - m)
++            path.lineTo(s * 0.64f, s * 0.92f)
++            path.lineTo(s * 0.47f, s * 0.58f)
++            path.lineTo(s * 0.78f, s * 0.58f)
++            path.close()
++            canvas.drawPath(path, fill)
++            canvas.drawPath(path, outline)
++        }
++    }
++}
+diff --git a/android-tv/app/src/main/java/com/corvofeng/fakeatv/DeviceInfo.kt b/android-tv/app/src/main/java/com/corvofeng/fakeatv/DeviceInfo.kt
+index af122e7..a78da54 100644
+--- a/android-tv/app/src/main/java/com/corvofeng/fakeatv/DeviceInfo.kt
++++ b/android-tv/app/src/main/java/com/corvofeng/fakeatv/DeviceInfo.kt
+@@ -7,12 +7,14 @@ import android.os.Build
+ import android.provider.Settings
+ import java.net.Inet4Address
+ import java.net.NetworkInterface
++import java.security.SecureRandom
+ import java.util.UUID
+ 
+ object DeviceInfo {
+ 
+     const val PREF_MENU_BUTTON_BINDING = "menu_button_binding"
+     const val PREF_INJECTION_MODE = "injection_mode"
++    const val PANEL_NAME = "Gupta's TV"
+ 
+     fun getPrefs(context: Context): SharedPreferences {
+         val storageContext = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && !context.isDeviceProtectedStorage) {
+@@ -50,25 +52,8 @@ object DeviceInfo {
+             return customName
+         }
+ 
+-        // Check if device is Dangbei
+-        if (Build.BRAND.equals("Dangbei", ignoreCase = true) ||
+-            Build.MANUFACTURER.equals("Dangbei", ignoreCase = true) ||
+-            Build.MODEL.startsWith("DBBOX", ignoreCase = true)
+-        ) {
+-            return "当贝盒子"
+-        }
+-
+-        val systemName = try {
+-            Settings.Global.getString(context.contentResolver, Settings.Global.DEVICE_NAME)
+-        } catch (_: Exception) {
+-            null
+-        }
+-
+-        if (!systemName.isNullOrBlank() && systemName != "Android TV") {
+-            return systemName
+-        }
+-
+-        return Build.MODEL?.takeIf { it.isNotBlank() } ?: "Android TV"
++        // The name iPhones show for the DPL panel.
++        return PANEL_NAME
+     }
+ 
+     fun getDeviceId(context: Context): String {
+@@ -110,6 +95,22 @@ object DeviceInfo {
+         return uuid
+     }
+ 
++    // Random 32-byte seed for the pairing keys, created once. Derived keys would follow from the
++    // server UUID, which the TV advertises to the whole network.
++    fun getPrivateKeySeed(context: Context): String {
++        val prefs = getPrefs(context)
++        val cached = prefs.getString("private_key_seed", null)
++        if (cached != null && cached.length == 64) {
++            return cached
++        }
++
++        val bytes = ByteArray(32)
++        SecureRandom().nextBytes(bytes)
++        val seed = bytes.joinToString("") { "%02x".format(it) }
++        prefs.edit().putString("private_key_seed", seed).commit()
++        return seed
++    }
++
+     fun getLocalIpAddress(context: Context): String? {
+         // 1. Try ConnectivityManager on API 23+
+         try {
+diff --git a/android-tv/app/src/main/java/com/corvofeng/fakeatv/Injector.kt b/android-tv/app/src/main/java/com/corvofeng/fakeatv/Injector.kt
+new file mode 100644
+index 0000000..030e83f
+--- /dev/null
++++ b/android-tv/app/src/main/java/com/corvofeng/fakeatv/Injector.kt
+@@ -0,0 +1,100 @@
++package com.corvofeng.fakeatv
++
++import android.os.SystemClock
++import android.view.InputDevice
++import android.view.InputEvent
++import android.view.KeyCharacterMap
++import android.view.KeyEvent
++import android.view.MotionEvent
++import java.lang.reflect.Method
++
++/**
++ * Key injector run as the ADB shell user, started once per connection by [LocalAdbDriver]:
++ * `CLASSPATH=<apk> app_process / com.corvofeng.fakeatv.Injector`. `input keyevent` starts a new
++ * Java runtime for every key, which takes about 0.9 s on the DPL panel; this one stays up and
++ * injects each key in a few milliseconds.
++ *
++ * Reads one command per line on stdin and never runs anything else:
++ * - `k <keycode>`: press and release one key
++ * - `t <text>`: type printable ASCII, one character at a time
++ * - `d <count>`: press Delete count times
++ * - `c <x> <y>`: tap the screen at x, y (cursor mode)
++ * - `s <x1> <y1> <x2> <y2> <ms>`: drag from one point to another (cursor mode scrolling)
++ */
++object Injector {
++    const val READY = "FAKEATV_INJECTOR_READY"
++
++    private const val INJECT_MODE_ASYNC = 0
++    private const val CHAR_GAP_MS = 15L
++
++    private lateinit var inputManager: Any
++    private lateinit var inject: Method
++
++    @JvmStatic
++    fun main(args: Array<String>) {
++        val imClass = Class.forName("android.hardware.input.InputManager")
++        inputManager = imClass.getMethod("getInstance").invoke(null)!!
++        inject = imClass.getMethod("injectInputEvent", InputEvent::class.java, Int::class.javaPrimitiveType)
++        val charMap = KeyCharacterMap.load(KeyCharacterMap.VIRTUAL_KEYBOARD)
++        println(READY)
++        System.out.flush()
++
++        while (true) {
++            val line = readLine() ?: break
++            val arg = line.trimEnd('\r').substringAfter(' ', "")
++            try {
++                when (line.substringBefore(' ')) {
++                    "k" -> arg.toIntOrNull()?.let { press(it) }
++                    "d" -> repeat((arg.toIntOrNull() ?: 0).coerceIn(0, 200)) { press(KeyEvent.KEYCODE_DEL) }
++                    "c" -> arg.split(' ').mapNotNull { it.toFloatOrNull() }.takeIf { it.size == 2 }?.let {
++                        drag(it[0], it[1], it[0], it[1], 40)
++                    }
++                    "s" -> arg.split(' ').mapNotNull { it.toFloatOrNull() }.takeIf { it.size == 5 }?.let {
++                        drag(it[0], it[1], it[2], it[3], it[4].toLong().coerceIn(40, 2000))
++                    }
++                    "t" -> for (c in arg) {
++                        if (c !in ' '..'~') continue
++                        charMap.getEvents(charArrayOf(c))?.forEach { send(KeyEvent.changeTimeRepeat(it, SystemClock.uptimeMillis(), 0)) }
++                        Thread.sleep(CHAR_GAP_MS)
++                    }
++                }
++            } catch (e: Exception) {
++                System.err.println("injector: ${e.javaClass.simpleName}")
++            }
++        }
++    }
++
++    private fun drag(x1: Float, y1: Float, x2: Float, y2: Float, durationMs: Long) {
++        val down = SystemClock.uptimeMillis()
++        touch(down, down, MotionEvent.ACTION_DOWN, x1, y1)
++        val steps = (durationMs / 10).toInt().coerceAtLeast(1)
++        for (i in 1..steps) {
++            Thread.sleep(durationMs / steps)
++            val f = i.toFloat() / steps
++            touch(down, SystemClock.uptimeMillis(), MotionEvent.ACTION_MOVE, x1 + (x2 - x1) * f, y1 + (y2 - y1) * f)
++        }
++        touch(down, SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, x2, y2)
++    }
++
++    private fun touch(downTime: Long, eventTime: Long, action: Int, x: Float, y: Float) {
++        val event = MotionEvent.obtain(downTime, eventTime, action, x, y, 0)
++        event.source = InputDevice.SOURCE_TOUCHSCREEN
++        inject.invoke(inputManager, event, INJECT_MODE_ASYNC)
++        event.recycle()
++    }
++
++    private fun press(keyCode: Int) {
++        val now = SystemClock.uptimeMillis()
++        send(keyEvent(now, now, KeyEvent.ACTION_DOWN, keyCode))
++        send(keyEvent(now, SystemClock.uptimeMillis(), KeyEvent.ACTION_UP, keyCode))
++    }
++
++    private fun keyEvent(downTime: Long, eventTime: Long, action: Int, keyCode: Int) = KeyEvent(
++        downTime, eventTime, action, keyCode, 0, 0, KeyCharacterMap.VIRTUAL_KEYBOARD, 0, 0,
++        InputDevice.SOURCE_KEYBOARD
++    )
++
++    private fun send(event: KeyEvent) {
++        inject.invoke(inputManager, event, INJECT_MODE_ASYNC)
++    }
++}
+diff --git a/android-tv/app/src/main/java/com/corvofeng/fakeatv/LocalAdbDriver.kt b/android-tv/app/src/main/java/com/corvofeng/fakeatv/LocalAdbDriver.kt
+index 87553d0..e304545 100644
+--- a/android-tv/app/src/main/java/com/corvofeng/fakeatv/LocalAdbDriver.kt
++++ b/android-tv/app/src/main/java/com/corvofeng/fakeatv/LocalAdbDriver.kt
+@@ -1,23 +1,35 @@
+ package com.corvofeng.fakeatv
+ 
+ import android.content.Context
++import android.content.pm.PackageManager
++import android.os.UserManager
++import android.provider.Settings
+ import android.util.Log
+-import dadb.AdbKeyPair
+-import dadb.AdbShellStream
+-import dadb.Dadb
++import android.view.KeyEvent
+ import java.io.File
++import java.util.concurrent.CountDownLatch
+ import java.util.concurrent.Executors
++import java.util.concurrent.TimeUnit
+ import java.util.concurrent.atomic.AtomicBoolean
+ 
++/**
++ * Sends keys through this TV's own adbd. Uses plain network ADB on 127.0.0.1:5555 when it is open,
++ * otherwise Wireless debugging (TLS) on the port adbd advertises over mDNS. Many TVs drop 5555 on
++ * every reboot; with WRITE_SECURE_SETTINGS granted once over ADB, the driver switches Wireless
++ * debugging back on itself, so the remote keeps working after a reboot without a computer.
++ */
+ object LocalAdbDriver {
+     private const val TAG = "LocalAdbDriver"
+     private const val ADB_HOST = "127.0.0.1"
+     private const val ADB_PORT = 5555
+ 
+     private val executor = Executors.newSingleThreadExecutor()
++    private val connectQueued = AtomicBoolean(false)
+     private var appContext: Context? = null
+-    private var dadbInstance: Dadb? = null
+-    private var shellStream: AdbShellStream? = null
++    private var adbKey: AdbKey? = null
++    private var connection: AdbShellConnection? = null
++    // Keys go to the long-running [Injector] when it started, else to `input keyevent` (slow).
++    @Volatile private var useInjector = false
+ 
+     val isConnected = AtomicBoolean(false)
+ 
+@@ -27,7 +39,11 @@ object LocalAdbDriver {
+     }
+ 
+     fun initAsync(callback: ((Boolean) -> Unit)? = null) {
++        if (!connectQueued.compareAndSet(false, true)) {
++            return
++        }
+         executor.execute {
++            connectQueued.set(false)
+             val ok = connectInternal()
+             callback?.invoke(ok)
+         }
+@@ -35,47 +51,154 @@ object LocalAdbDriver {
+ 
+     @Synchronized
+     fun connectInternal(): Boolean {
+-        if (isConnected.get() && shellStream != null) {
++        if (connection?.isOpen == true) {
+             return true
+         }
+         closeInternal()
+-        try {
+-            Log.i(TAG, "Attempting to connect to local ADB at $ADB_HOST:$ADB_PORT...")
+-            val context = appContext
+-            val d = if (context != null) {
+-                val keyDir = File(context.filesDir, "adb")
+-                keyDir.mkdirs()
+-                val privFile = File(keyDir, "adbkey")
+-                val pubFile = File(keyDir, "adbkey.pub")
+-                if (!privFile.exists() || !pubFile.exists()) {
+-                    Log.i(TAG, "Generating internal ADB keypair at $keyDir...")
+-                    AdbKeyPair.generate(privFile, pubFile)
+-                }
+-                val keyPair = AdbKeyPair.read(privFile, pubFile)
+-                Dadb.create(ADB_HOST, ADB_PORT, keyPair)
++        val context = appContext ?: return false
++        val key = adbKey ?: try {
++            val dir = keyDir(context) ?: run {
++                Log.i(TAG, "Storage still locked, waiting for unlock before loading the ADB key")
++                return false
++            }
++            // No spaces: Settings shows the name only up to the first one.
++            AdbKey(dir, "fakeatv@${android.os.Build.MODEL.replace(' ', '_')}").also { adbKey = it }
++        } catch (e: Exception) {
++            Log.w(TAG, "Could not create the ADB key: ${e.message}")
++            return false
++        }
++
++        // A new key on plain ADB waits for "Allow USB debugging?" on the TV, so allow time for that.
++        var ready = CountDownLatch(1)
++        var conn = tryConnect(ADB_PORT, key, 60_000, ready)
++        if (conn == null) {
++            ensureWirelessDebugging(context)
++            val tlsPort = AdbMdns.findTlsPort(context, 15_000)
++            if (tlsPort > 0) {
++                conn = tryConnect(tlsPort, key, 10_000, ready)
++            } else {
++                Log.w(TAG, "Wireless debugging port not found")
++            }
++        }
++        useInjector = false
++        if (conn != null) {
++            if (startInjector(context, conn, ready)) {
++                useInjector = true
+             } else {
+-                Dadb.create(ADB_HOST, ADB_PORT)
++                // The shell exits when the injector can't start; open a plain one for `input`.
++                val port = conn.port
++                conn.close()
++                ready = CountDownLatch(1)
++                conn = tryConnect(port, key, 10_000, ready)
+             }
++        }
++        connection = conn
++        isConnected.set(conn != null)
++        if (conn != null) YouTubeSearchWatcher.start()
++        return conn != null
++    }
+ 
+-            val stream = d.openShell()
+-            dadbInstance = d
+-            shellStream = stream
+-            isConnected.set(true)
+-            Log.i(TAG, "Successfully connected to local ADB daemon!")
+-            return true
++    /**
++     * The key lives in device-protected storage. The service starts during Direct Boot, before the
++     * user is unlocked; a key kept in credential-protected storage then looked missing, and the
++     * new key generated in its place overwrote the approved one once storage unlocked.
++     * Returns null while storage is locked and there is no key here yet.
++     */
++    private fun keyDir(context: Context): File? {
++        val dir = File(context.createDeviceProtectedStorageContext().filesDir, "adb")
++        val file = File(dir, AdbKey.FILE_NAME)
++        if (file.exists()) {
++            Log.i(TAG, "ADB key loaded from device storage")
++            return dir
++        }
++        if (context.getSystemService(UserManager::class.java)?.isUserUnlocked == false) return null
++        // Once: move the key an older build kept in credential-protected storage.
++        val old = File(context.filesDir, "adb/${AdbKey.FILE_NAME}")
++        if (old.exists()) {
++            dir.mkdirs()
++            old.copyTo(file)
++            old.delete()
++            Log.i(TAG, "ADB key moved to device storage")
++        }
++        return dir
++    }
++
++    /** Opens a second stream (e.g. `shell:logcat …`) on the port the key shell is using. */
++    fun openStream(service: String, onOutput: (ByteArray) -> Unit): AdbShellConnection? {
++        val port = connection?.takeIf { it.isOpen }?.port ?: return null
++        val key = adbKey ?: return null
++        val conn = AdbShellConnection(ADB_HOST, port, key, service, onOutput)
++        return try {
++            conn.connect(10_000)
++            conn
+         } catch (e: Exception) {
+-            Log.w(TAG, "Failed to connect to local ADB ($ADB_HOST:$ADB_PORT): ${e.message}")
+-            closeInternal()
+-            return false
++            Log.w(TAG, "Could not open an ADB stream: ${e.message}")
++            conn.close()
++            null
++        }
++    }
++
++    /**
++     * Turns the shell into the [Injector] (`exec`, so the shell is gone and nothing sent later can
++     * run as a shell command). The connection closes if it can't start.
++     */
++    private fun startInjector(context: Context, conn: AdbShellConnection, ready: CountDownLatch): Boolean {
++        val apk = context.applicationInfo.sourceDir
++        if (apk.any { it == '\'' || it.isWhitespace() }) return false
++        return try {
++            conn.sendLine("CLASSPATH='$apk' exec app_process / ${Injector::class.java.name} || exit\n")
++            val ok = ready.await(10, TimeUnit.SECONDS) && conn.isOpen
++            Log.i(TAG, if (ok) "Key injector running" else "Key injector did not start, using input keyevent")
++            ok
++        } catch (e: Exception) {
++            Log.w(TAG, "Key injector failed: ${e.message}")
++            false
++        }
++    }
++
++    private fun tryConnect(port: Int, key: AdbKey, authTimeoutMs: Int, ready: CountDownLatch): AdbShellConnection? {
++        // The shell's output is only read to see the injector's ready line.
++        val seen = StringBuilder()
++        val conn = AdbShellConnection(ADB_HOST, port, key) { bytes ->
++            synchronized(seen) {
++                seen.append(String(bytes, Charsets.UTF_8))
++                if (seen.contains(Injector.READY)) ready.countDown()
++                if (seen.length > 512) seen.delete(0, seen.length - 64)
++            }
++        }
++        return try {
++            Log.i(TAG, "Connecting to local ADB at $ADB_HOST:$port...")
++            conn.connect(authTimeoutMs)
++            Log.i(TAG, "Connected to local ADB on port $port")
++            conn
++        } catch (e: Exception) {
++            Log.w(TAG, "Local ADB on port $port failed: ${e.message}")
++            conn.close()
++            null
++        }
++    }
++
++    private fun ensureWirelessDebugging(context: Context) {
++        if (context.checkSelfPermission("android.permission.WRITE_SECURE_SETTINGS") !=
++            PackageManager.PERMISSION_GRANTED
++        ) return
++        try {
++            val cr = context.contentResolver
++            if (Settings.Global.getInt(cr, "adb_wifi_enabled", 0) != 1) {
++                Settings.Global.putInt(cr, "adb_wifi_enabled", 1)
++                Log.i(TAG, "Switched Wireless debugging on")
++            }
++            // Otherwise Android forgets "Always allow" after 7 days without a connection.
++            Settings.Global.putLong(cr, "adb_allowed_connection_time", 0L)
++        } catch (e: Exception) {
++            Log.w(TAG, "Could not switch Wireless debugging on: ${e.message}")
+         }
+     }
+ 
+     @Synchronized
+     fun closeInternal() {
+-        try { shellStream?.close() } catch (_: Exception) {}
+-        try { dadbInstance?.close() } catch (_: Exception) {}
+-        shellStream = null
+-        dadbInstance = null
++        connection?.close()
++        connection = null
+         isConnected.set(false)
+     }
+ 
+@@ -92,40 +215,74 @@ object LocalAdbDriver {
+         "volume_down" to "KEYCODE_VOLUME_DOWN",
+         "mute" to "KEYCODE_VOLUME_MUTE",
+         "power" to "KEYCODE_POWER",
+-        "siri" to "KEYCODE_SEARCH"
++        "siri" to "KEYCODE_SEARCH",
++        "channel_up" to "KEYCODE_CHANNEL_UP",
++        "channel_down" to "KEYCODE_CHANNEL_DOWN",
++        "guide" to "KEYCODE_GUIDE",
++        "enter" to "KEYCODE_ENTER"
+     )
+ 
+     fun sendKey(buttonName: String, isMappedToMenu: Boolean = false): Boolean {
++        // Only known keys: the name ends up on an ADB shell command line.
+         val keycode = if (isMappedToMenu) {
+             "KEYCODE_MENU"
+         } else {
+-            KEY_MAP[buttonName.lowercase()] ?: "KEYCODE_${buttonName.uppercase()}"
++            KEY_MAP[buttonName.lowercase()] ?: return false
+         }
+ 
+-        if (!isConnected.get()) {
+-            if (!connectInternal()) {
+-                return false
+-            }
++        val line = if (useInjector) "k ${KeyEvent.keyCodeFromString(keycode)}\n" else "input keyevent $keycode\n"
++        if (!sendLine(line)) return false
++        Log.d(TAG, "ADB sent keyevent: $keycode")
++        return true
++    }
++
++    /**
++     * Types text into the focused field. Printable ASCII only; `input text` cannot do more.
++     * One command per character: Netflix drops a repeated letter sent within one command.
++     */
++    fun sendText(text: String): Boolean {
++        val chars = text.filter { it in ' '..'~' }
++        if (chars.isEmpty()) return false
++        if (useInjector) return sendLine("t $chars\n")
++        for (c in chars) {
++            val arg = if (c == ' ') "%s" else c.toString()
++            // Single-quoted for the shell; a quote inside becomes '\''.
++            if (!sendLine("input text '${arg.replace("'", "'\\''")}'\n")) return false
+         }
++        return true
++    }
+ 
+-        return synchronized(this) {
+-            try {
+-                val stream = shellStream ?: return false
+-                val cmd = "input keyevent $keycode\n"
+-                stream.write(cmd)
+-                Log.d(TAG, "ADB sent keyevent: $keycode")
+-                true
+-            } catch (e: Exception) {
+-                Log.w(TAG, "Error writing to ADB shell stream: ${e.message}, will retry reconnection")
+-                closeInternal()
+-                if (connectInternal()) {
+-                    try {
+-                        shellStream?.write("input keyevent $keycode\n")
+-                        return true
+-                    } catch (_: Exception) {}
+-                }
+-                false
+-            }
++    /** Cursor mode: tap, or drag over [durationMs]. Needs the injector; false sends nothing. */
++    fun sendTouch(x1: Float, y1: Float, x2: Float, y2: Float, durationMs: Long): Boolean {
++        if (!useInjector) return false
++        val line = if (durationMs <= 0) "c ${x1.toInt()} ${y1.toInt()}\n"
++            else "s ${x1.toInt()} ${y1.toInt()} ${x2.toInt()} ${y2.toInt()} $durationMs\n"
++        return sendLine(line)
++    }
++
++    fun sendDeletes(count: Int): Boolean {
++        if (count <= 0) return true
++        if (useInjector) return sendLine("d ${count.coerceAtMost(200)}\n")
++        return sendLine("input keyevent ${List(count.coerceAtMost(200)) { "67" }.joinToString(" ")}\n")
++    }
++
++    private fun sendLine(line: String): Boolean {
++        val conn = connection
++        if (conn == null || !conn.isOpen) {
++            // Reconnect in the background; this key falls through to the Accessibility path.
++            isConnected.set(false)
++            initAsync()
++            return false
++        }
++        return try {
++            conn.sendLine(line)
++            true
++        } catch (e: Exception) {
++            Log.w(TAG, "Error writing to ADB shell: ${e.message}, reconnecting")
++            conn.close()
++            isConnected.set(false)
++            initAsync()
++            false
+         }
+     }
+ }
+diff --git a/android-tv/app/src/main/java/com/corvofeng/fakeatv/YouTubeSearchWatcher.kt b/android-tv/app/src/main/java/com/corvofeng/fakeatv/YouTubeSearchWatcher.kt
+new file mode 100644
+index 0000000..5419b01
+--- /dev/null
++++ b/android-tv/app/src/main/java/com/corvofeng/fakeatv/YouTubeSearchWatcher.kt
+@@ -0,0 +1,61 @@
++package com.corvofeng.fakeatv
++
++import android.util.Log
++import java.util.concurrent.atomic.AtomicBoolean
++
++/**
++ * YouTube draws its own keyboard, so Accessibility never sees a text field there. Its log does
++ * say where it is ("Navigated to https://www.youtube.com/tv#/search?..."), so this follows that
++ * one line over local ADB and opens the iPhone keyboard while YouTube's search is showing.
++ * Only the route is read; URLs are never logged.
++ */
++object YouTubeSearchWatcher {
++    private const val TAG = "YouTubeSearchWatcher"
++    private const val MARKER = "Navigated to https://www.youtube.com/tv#/"
++    // The whole buffer first, so the last route YouTube logged sets the starting state.
++    private const val SERVICE = "shell:logcat -v raw -s cobalt:I | grep --line-buffered 'Navigated to '"
++
++    private val running = AtomicBoolean(false)
++
++    fun start() {
++        if (!running.compareAndSet(false, true)) return
++        Thread({ run() }, "YouTubeSearchWatcher").apply { isDaemon = true }.start()
++    }
++
++    private fun run() {
++        try {
++            // Retry while the key shell is up; when it drops, its reconnect starts this again.
++            while (LocalAdbDriver.isConnected.get()) {
++                watchOnce()
++                AtvAccessibilityService.instance?.setYouTubeSearch(false)
++                Thread.sleep(5000)
++            }
++        } catch (_: InterruptedException) {
++        } finally {
++            running.set(false)
++        }
++    }
++
++    private fun watchOnce() {
++        val pending = StringBuilder()
++        val stream = LocalAdbDriver.openStream(SERVICE) { data ->
++            pending.append(String(data, Charsets.UTF_8))
++            while (true) {
++                val end = pending.indexOf('\n')
++                if (end < 0) break
++                onLine(pending.substring(0, end))
++                pending.delete(0, end + 1)
++            }
++        } ?: return
++        Log.i(TAG, "Watching YouTube's search screen")
++        while (stream.isOpen) Thread.sleep(1000)
++        Log.i(TAG, "Stopped watching YouTube")
++    }
++
++    private fun onLine(line: String) {
++        val at = line.indexOf(MARKER)
++        if (at < 0) return
++        val search = line.startsWith("search", at + MARKER.length)
++        AtvAccessibilityService.instance?.setYouTubeSearch(search)
++    }
++}
+diff --git a/android-tv/app/src/main/res/drawable/banner.xml b/android-tv/app/src/main/res/drawable/banner.xml
+index d641f3e..d5cc769 100644
+--- a/android-tv/app/src/main/res/drawable/banner.xml
++++ b/android-tv/app/src/main/res/drawable/banner.xml
+@@ -1,9 +1,23 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<shape xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:shape="rectangle">
+-    <gradient
+-        android:angle="45"
+-        android:endColor="#1B5E20"
+-        android:startColor="#121212" />
+-    <corners android:radius="12dp" />
+-</shape>
++<!-- An apple and a remote on a dark tile, in the style of the home screen's Others card. -->
++<vector xmlns:android="http://schemas.android.com/apk/res/android"
++    android:width="320dp"
++    android:height="180dp"
++    android:viewportWidth="320"
++    android:viewportHeight="180">
++    <path android:fillColor="#1C1F26" android:pathData="M0,0h320v180h-320z" />
++    <!-- apple -->
++    <path android:fillColor="#F2F2F2"
++        android:pathData="M112,74 C103,66 82,64 76,82 C70,100 80,126 92,132 C99,136 104,133 112,131 C120,133 125,136 132,132 C144,126 154,100 148,82 C142,64 121,66 112,74 Z" />
++    <path android:fillColor="#F2F2F2"
++        android:pathData="M113,68 C113,56 121,48 132,46 C132,58 124,66 113,68 Z" />
++    <!-- remote -->
++    <path android:fillColor="#C9CED6"
++        android:pathData="M198,38h28a14,14 0,0 1,14 14v76a14,14 0,0 1,-14 14h-28a14,14 0,0 1,-14 -14v-76a14,14 0,0 1,14 -14z" />
++    <path android:fillColor="#7D838E"
++        android:pathData="M212,51a15,15 0,1 1,0 30a15,15 0,1 1,0 -30z" />
++    <path android:fillColor="#2A2E36" android:pathData="M203,94a6,6 0,1 1,0 12a6,6 0,1 1,0 -12z" />
++    <path android:fillColor="#2A2E36" android:pathData="M221,94a6,6 0,1 1,0 12a6,6 0,1 1,0 -12z" />
++    <path android:fillColor="#2A2E36" android:pathData="M203,113a6,6 0,1 1,0 12a6,6 0,1 1,0 -12z" />
++    <path android:fillColor="#2A2E36" android:pathData="M221,113a6,6 0,1 1,0 12a6,6 0,1 1,0 -12z" />
++</vector>
+diff --git a/android-tv/settings.gradle.kts b/android-tv/settings.gradle.kts
+index db65523..9421435 100644
+--- a/android-tv/settings.gradle.kts
++++ b/android-tv/settings.gradle.kts
+@@ -1,8 +1,5 @@
+ pluginManagement {
+     repositories {
+-        maven { url = uri("https://maven.aliyun.com/repository/public") }
+-        maven { url = uri("https://maven.aliyun.com/repository/google") }
+-        maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
+         google()
+         mavenCentral()
+         gradlePluginPortal()
+@@ -11,8 +8,6 @@ pluginManagement {
+ dependencyResolutionManagement {
+     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+     repositories {
+-        maven { url = uri("https://maven.aliyun.com/repository/public") }
+-        maven { url = uri("https://maven.aliyun.com/repository/google") }
+         google()
+         mavenCentral()
+     }
+diff --git a/crates/atv-android/Cargo.toml b/crates/atv-android/Cargo.toml
+index 2ca5065..de34716 100644
+--- a/crates/atv-android/Cargo.toml
++++ b/crates/atv-android/Cargo.toml
+@@ -12,5 +12,6 @@ atv-core = { path = "../atv-core" }
+ jni = "0.21"
+ tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync"] }
+ tracing = "0.1"
++tracing-subscriber = { version = "0.3", default-features = false, features = ["fmt", "std"] }
+ once_cell = "1.19"
+ 
+diff --git a/crates/atv-android/src/lib.rs b/crates/atv-android/src/lib.rs
+index a82cd6d..f6e4491 100644
+--- a/crates/atv-android/src/lib.rs
++++ b/crates/atv-android/src/lib.rs
+@@ -11,7 +11,70 @@ use once_cell::sync::Lazy;
+ use tokio::runtime::Runtime;
+ use tracing::{error, info, warn};
+ 
+-use atv_core::{AtvConfig, AtvDelegate, AtvServer, EventKind, TouchPhase};
++use atv_core::{AtvConfig, AtvDelegate, AtvServer, EventKind, TouchPhase, TrackpadMode};
++
++/// Native log lines go to logcat under the tag `AtvNative`: server start-up, Bonjour and
++/// connections at INFO, everything else only from WARN, so typed text never reaches the log.
++mod logcat {
++    use std::ffi::CString;
++    use std::io;
++    #[cfg_attr(not(target_os = "android"), allow(unused_imports))]
++    use std::os::raw::{c_char, c_int};
++    use std::sync::Once;
++
++    use tracing::Level;
++    use tracing_subscriber::filter::Targets;
++    use tracing_subscriber::prelude::*;
++
++    #[cfg(target_os = "android")]
++    #[link(name = "log")]
++    extern "C" {
++        fn __android_log_write(prio: c_int, tag: *const c_char, text: *const c_char) -> c_int;
++    }
++
++    pub struct Writer;
++
++    impl io::Write for Writer {
++        fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
++            let line = String::from_utf8_lossy(buf);
++            let line = line.trim_end();
++            if let Ok(text) = CString::new(line.replace('\0', "")) {
++                #[cfg(target_os = "android")]
++                unsafe {
++                    __android_log_write(4, c"AtvNative".as_ptr(), text.as_ptr());
++                }
++                #[cfg(not(target_os = "android"))]
++                let _ = text;
++            }
++            Ok(buf.len())
++        }
++
++        fn flush(&mut self) -> io::Result<()> {
++            Ok(())
++        }
++    }
++
++    pub fn init() {
++        static ONCE: Once = Once::new();
++        ONCE.call_once(|| {
++            let filter = Targets::new()
++                .with_target("atv_core::server", Level::INFO)
++                .with_target("atv_android", Level::INFO)
++                .with_default(Level::WARN);
++            let _ = tracing_subscriber::registry()
++                .with(
++                    tracing_subscriber::fmt::layer()
++                        .with_writer(|| Writer)
++                        .with_ansi(false)
++                        .without_time()
++                        .with_level(true)
++                        .with_target(false),
++                )
++                .with(filter)
++                .try_init();
++        });
++    }
++}
+ 
+ struct JniDelegate {
+     jvm: JavaVM,
+@@ -82,6 +145,32 @@ impl AtvDelegate for JniDelegate {
+         }
+     }
+ 
++    fn on_text_input(&self, insertion: &str, deletion_count: u64, text_to_assert: Option<&str>) {
++        if let Ok(mut env) = self.jvm.attach_current_thread() {
++            let Ok(insertion) = env.new_string(insertion) else {
++                return;
++            };
++            let assert_obj = match text_to_assert {
++                Some(text) => match env.new_string(text) {
++                    Ok(s) => JObject::from(s),
++                    Err(_) => return,
++                },
++                None => JObject::null(),
++            };
++            let obj = self.callback.as_obj();
++            let _ = env.call_method(
++                obj,
++                "onTextInput",
++                "(Ljava/lang/String;ILjava/lang/String;)V",
++                &[
++                    JValue::Object(&insertion),
++                    JValue::Int(deletion_count.min(i32::MAX as u64) as i32),
++                    JValue::Object(&assert_obj),
++                ],
++            );
++        }
++    }
++
+     fn on_event(&self, kind: EventKind, detail: &str) {
+         if let Ok(mut env) = self.jvm.attach_current_thread() {
+             let kind_str = match env.new_string(format!("{kind:?}")) {
+@@ -120,8 +209,10 @@ pub extern "system" fn Java_com_corvofeng_fakeatv_AtvNative_nativeStartServer(
+     device_id: JString,
+     server_id: JString,
+     local_ip: JString,
++    private_key: JString,
+     callback: JObject,
+ ) -> jboolean {
++    logcat::init();
+     let mut state_guard = match SERVER_STATE.lock() {
+         Ok(guard) => guard,
+         Err(_) => return JNI_FALSE,
+@@ -155,6 +246,20 @@ pub extern "system" fn Java_com_corvofeng_fakeatv_AtvNative_nativeStartServer(
+         .map(|s| s.into())
+         .filter(|s: &String| !s.is_empty());
+ 
++    // 32-byte seed as 64 hex chars, generated once and kept by the app. Without it the key is
++    // rederived from a fresh UUID on every start, and paired iPhones stop trusting the TV.
++    let private_key_seed: Option<[u8; 32]> = env
++        .get_string(&private_key)
++        .ok()
++        .map(|s| String::from(s))
++        .and_then(|s| {
++            let bytes = (0..s.len())
++                .step_by(2)
++                .map(|i| s.get(i..i + 2).and_then(|h| u8::from_str_radix(h, 16).ok()))
++                .collect::<Option<Vec<u8>>>()?;
++            bytes.try_into().ok()
++        });
++
+     let jvm = match env.get_java_vm() {
+         Ok(vm) => vm,
+         Err(e) => {
+@@ -185,6 +290,13 @@ pub extern "system" fn Java_com_corvofeng_fakeatv_AtvNative_nativeStartServer(
+     config.pin = pin as u32;
+     config.device_id = device_id_str;
+     config.server_identifier = server_id_str;
++    if private_key_seed.is_some() {
++        config.private_key = private_key_seed;
++    } else {
++        warn!("no valid private key seed from Android; pairing will not survive a restart");
++    }
++    // The debug inspector has no authentication and nothing on Android uses it.
++    config.ui_port = None;
+     if let Some(ref s) = local_ip_str {
+         if let Ok(ip) = s.parse::<Ipv4Addr>() {
+             info!("using explicit local IP from Android: {ip}");
+@@ -234,6 +346,34 @@ pub extern "system" fn Java_com_corvofeng_fakeatv_AtvNative_nativeStopServer(
+     }
+ }
+ 
++/// The Bonjour services the app registers with NsdManager, one per line:
++/// `type<TAB>port<TAB>key=value<TAB>…`. Empty when the server isn't running.
++#[no_mangle]
++pub extern "system" fn Java_com_corvofeng_fakeatv_AtvNative_nativeBonjourServices<'a>(
++    env: JNIEnv<'a>,
++    _class: JClass,
++) -> JString<'a> {
++    let lines = SERVER_STATE
++        .lock()
++        .ok()
++        .and_then(|guard| {
++            guard.as_ref().and_then(|running| running.server.as_ref()).map(|server| {
++                server
++                    .bonjour_services()
++                    .iter()
++                    .map(|service| {
++                        let mut fields = vec![service.service_type.clone(), service.port.to_string()];
++                        fields.extend(service.txt.iter().map(|(k, v)| format!("{k}={v}")));
++                        fields.join("\t")
++                    })
++                    .collect::<Vec<_>>()
++                    .join("\n")
++            })
++        })
++        .unwrap_or_default();
++    env.new_string(lines).unwrap_or_else(|_| JString::default())
++}
++
+ #[no_mangle]
+ pub extern "system" fn Java_com_corvofeng_fakeatv_AtvNative_nativeIsRunning(
+     _env: JNIEnv,
+@@ -245,3 +385,38 @@ pub extern "system" fn Java_com_corvofeng_fakeatv_AtvNative_nativeIsRunning(
+         JNI_FALSE
+     }
+ }
++
++/// The app in front wants the cursor (`mouse`) or the D-pad; not saved as the user's choice.
++#[no_mangle]
++pub extern "system" fn Java_com_corvofeng_fakeatv_AtvNative_nativeSetTrackpadMode(
++    _env: JNIEnv,
++    _class: JClass,
++    mouse: jboolean,
++) {
++    let mode = if mouse == JNI_TRUE { TrackpadMode::Mouse } else { TrackpadMode::Direction };
++    if let Ok(state) = SERVER_STATE.lock() {
++        if let Some(server) = state.as_ref().and_then(|r| r.server.as_ref()) {
++            server.set_trackpad_mode_transient(mode);
++        }
++    }
++}
++
++/// A text field on the TV gained (`focused`, with its current `text`) or lost focus.
++#[no_mangle]
++pub extern "system" fn Java_com_corvofeng_fakeatv_AtvNative_nativeSetTextFocus(
++    mut env: JNIEnv,
++    _class: JClass,
++    focused: jboolean,
++    text: JString,
++) {
++    let text: Option<String> = if focused == JNI_TRUE {
++        Some(env.get_string(&text).map(|s| s.into()).unwrap_or_default())
++    } else {
++        None
++    };
++    if let Ok(state) = SERVER_STATE.lock() {
++        if let Some(server) = state.as_ref().and_then(|r| r.server.as_ref()) {
++            server.set_text_focus(text);
++        }
++    }
++}
+diff --git a/crates/atv-core/Cargo.toml b/crates/atv-core/Cargo.toml
+index fec7768..19dcd7b 100644
+--- a/crates/atv-core/Cargo.toml
++++ b/crates/atv-core/Cargo.toml
+@@ -20,3 +20,5 @@ uuid = { version = "1", features = ["v4"] }
+ hex = "0.4"
+ thiserror = "2"
+ tracing = "0.1"
++# Binary property lists for the Remote Text Input (keyboard) archives.
++plist = "1"
+diff --git a/crates/atv-core/src/delegate.rs b/crates/atv-core/src/delegate.rs
+index 4849c2c..4b3c536 100644
+--- a/crates/atv-core/src/delegate.rs
++++ b/crates/atv-core/src/delegate.rs
+@@ -42,6 +42,10 @@ pub enum EventKind {
+     ControlMessage,
+     /// Mouse mode: a short tap on the touch surface (click).
+     MouseClick,
++    /// The touch surface switched mode (TV button held). Detail: "mouse" or "direction".
++    TrackpadMode,
++    /// Keyboard session traffic (`_tiStart`, `_tiStarted`, `_tiStopped`, `_tiC`), names only.
++    TextInput,
+ }
+ 
+ /// Operating mode for the Apple TV Remote touch surface.
+@@ -115,8 +119,9 @@ impl TrackpadMode {
+ pub trait AtvDelegate: Send + Sync + 'static {
+     /// A completed remote button action (fired on button-up), e.g. "up",
+     /// "down", "select", "menu", "home", "play_pause", "volume_up",
+-    /// "volume_down", "mute", "power", "siri". Swipe gestures on the touch
+-    /// surface also arrive here as directional buttons.
++    /// "volume_down", "mute", "power", "siri", "keyboard" (play/pause
++    /// held) and "dock" (Back held). Swipe gestures on the touch surface also arrive here as
++    /// directional buttons.
+     fn on_button(&self, _name: &str) {}
+ 
+     /// Touch surface activity. `dx`/`dy` are deltas in phone touchpad units
+@@ -130,6 +135,10 @@ pub trait AtvDelegate: Send + Sync + 'static {
+     /// Lifecycle/state event with a human-readable detail string.
+     fn on_event(&self, _kind: EventKind, _detail: &str) {}
+ 
++    /// The iPhone keyboard typed into the focused text field: delete `deletion_count` characters
++    /// before the cursor, then insert `insertion`; `text_to_assert`, when present, is the whole text.
++    fn on_text_input(&self, _insertion: &str, _deletion_count: u64, _text_to_assert: Option<&str>) {}
++
+     /// Called when the input mode changes (trackpad mode: Direction, Mouse, or Idle).
+     fn on_trackpad_mode_changed(&self, mode: TrackpadMode) {
+         self.on_mode_changed(mode.is_mouse());
+diff --git a/crates/atv-core/src/lib.rs b/crates/atv-core/src/lib.rs
+index c77359a..4cc800f 100644
+--- a/crates/atv-core/src/lib.rs
++++ b/crates/atv-core/src/lib.rs
+@@ -21,14 +21,16 @@ pub mod server;
+ pub mod session;
+ pub mod settings;
+ pub mod srp;
++pub mod text_input;
+ pub mod tlv;
+ 
+ pub use delegate::{AtvDelegate, EventKind, TouchPhase, TrackpadMode};
+ pub use error::{Error, Result};
+ pub use identity::DeviceIdentity;
+ pub use inspector::InspectorHub;
+-pub use server::{AtvConfig, AtvServer};
++pub use server::{AtvConfig, AtvServer, BonjourService};
+ pub use settings::{UserSettings, DEFAULT_MOUSE_SPEED};
++pub use text_input::{TextFocus, TextOperation};
+ 
+ /// Companion frame types (first byte of the 4-byte frame header).
+ #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+diff --git a/crates/atv-core/src/server.rs b/crates/atv-core/src/server.rs
+index d8319c4..d93a180 100644
+--- a/crates/atv-core/src/server.rs
++++ b/crates/atv-core/src/server.rs
+@@ -10,11 +10,11 @@ use std::sync::atomic::{AtomicBool, AtomicU8, Ordering};
+ use std::sync::Arc;
+ use std::time::Duration;
+ 
+-#[cfg(not(target_os = "macos"))]
++#[cfg(not(any(target_os = "macos", target_os = "android")))]
+ use mdns_sd::{ServiceDaemon, ServiceInfo};
+ use tokio::io::AsyncReadExt;
+ use tokio::net::{TcpListener, TcpStream};
+-use tokio::sync::{watch, Mutex};
++use tokio::sync::{mpsc, watch, Mutex};
+ use tokio::task::JoinHandle;
+ use tracing::{debug, info, warn};
+ 
+@@ -26,8 +26,14 @@ use crate::identity::{self, DeviceIdentity};
+ use crate::inspector::InspectorHub;
+ use crate::registry::{ActiveConnectionTracker, DeviceRegistry};
+ use crate::session::{CompanionSession, DEVICE_MODEL};
++use crate::text_input::TextFocus;
+ use crate::FrameType;
+ 
++/// The Apple TV Remote finds the TV through `_companion-link` and `_mediaremotetv` alone. An
++/// `_airplay._tcp` stub would also show this TV in Macs' Screen Mirroring list, where it can't
++/// mirror, and its name would clash with a real AirPlay receiver on the same device.
++const ADVERTISE_AIRPLAY_STUB: bool = false;
++
+ pub const MRP_PORT: u16 = 49152;
+ pub const COMPANION_PORT: u16 = 49153;
+ pub const SOURCE_VERSION: &str = "715.2";
+@@ -116,14 +122,27 @@ pub struct AtvServer {
+     mouse_mode: Arc<AtomicBool>,
+     trackpad_mode: Arc<AtomicU8>,
+     delegate: Arc<dyn AtvDelegate>,
++    text_focus_tx: watch::Sender<Option<TextFocus>>,
+     shutdown_tx: watch::Sender<bool>,
+     tasks: Vec<JoinHandle<()>>,
+     #[cfg(target_os = "macos")]
+     dns_sd_children: Vec<tokio::process::Child>,
+-    #[cfg(not(target_os = "macos"))]
++    #[cfg(not(any(target_os = "macos", target_os = "android")))]
+     mdns: ServiceDaemon,
+-    #[cfg(not(target_os = "macos"))]
++    #[cfg(not(any(target_os = "macos", target_os = "android")))]
+     mdns_fullnames: Vec<String>,
++    bonjour: Vec<BonjourService>,
++}
++
++/// One Bonjour service this server needs advertised. On Android the app answers for these itself
++/// (`Bonjour.kt`, a small mDNS responder on Wi-Fi): neither mdns-sd nor the system's NsdManager kept
++/// the TV in iPhones' lists on the DPL panel.
++#[derive(Clone, Debug)]
++pub struct BonjourService {
++    /// For example `_companion-link._tcp`.
++    pub service_type: String,
++    pub port: u16,
++    pub txt: Vec<(String, String)>,
+ }
+ 
+ impl AtvServer {
+@@ -182,13 +201,18 @@ impl AtvServer {
+         let inspector = InspectorHub::new();
+ 
+         let (shutdown_tx, shutdown_rx) = watch::channel(false);
++        let (text_focus_tx, text_focus_rx) = watch::channel(None);
+         let mut tasks = Vec::new();
+ 
+         tasks.push(tokio::spawn(mrp_loop(mrp_listener, shutdown_rx.clone())));
+-        tasks.push(tokio::spawn(airplay_loop(
+-            airplay_listener,
+-            shutdown_rx.clone(),
+-        )));
++        if ADVERTISE_AIRPLAY_STUB {
++            tasks.push(tokio::spawn(airplay_loop(
++                airplay_listener,
++                shutdown_rx.clone(),
++            )));
++        } else {
++            drop(airplay_listener);
++        }
+         tasks.push(tokio::spawn(companion_loop(
+             companion_listener,
+             identity.clone(),
+@@ -197,12 +221,15 @@ impl AtvServer {
+             inspector.clone(),
+             trackpad_mode.clone(),
+             mouse_mode.clone(),
++            text_focus_rx,
+             shutdown_rx.clone(),
+         )));
+ 
+         let mut actual_ui_port = None;
+         if let Some(ui_p) = config.ui_port {
+-            match TcpListener::bind((Ipv4Addr::UNSPECIFIED, ui_p)).await {
++            // The inspector has no authentication and can press buttons on this computer, so it
++            // only answers on this computer (http://127.0.0.1), not to other devices on the network.
++            match TcpListener::bind((Ipv4Addr::LOCALHOST, ui_p)).await {
+                 Ok(ui_listener) => {
+                     actual_ui_port = Some(ui_p);
+                     tasks.push(tokio::spawn(ui_loop(
+@@ -297,6 +324,23 @@ impl AtvServer {
+                 ],
+             ),
+         ];
++        let services: Vec<_> = services
++            .into_iter()
++            .filter(|(service_type, _, _)| {
++                ADVERTISE_AIRPLAY_STUB || !service_type.starts_with("_airplay.")
++            })
++            .collect();
++        let bonjour: Vec<BonjourService> = services
++            .iter()
++            .map(|(service_type, port, properties)| BonjourService {
++                service_type: service_type.trim_end_matches(".local.").to_string(),
++                port: *port,
++                txt: properties
++                    .iter()
++                    .map(|(k, v)| (k.to_string(), v.to_string()))
++                    .collect(),
++            })
++            .collect();
+ 
+         #[cfg(target_os = "macos")]
+         let mut dns_sd_children = Vec::new();
+@@ -330,13 +374,32 @@ impl AtvServer {
+             tokio::time::sleep(std::time::Duration::from_millis(500)).await;
+         }
+ 
+-        #[cfg(not(target_os = "macos"))]
++#[cfg(not(any(target_os = "macos", target_os = "android")))]
+         let mdns = ServiceDaemon::new().map_err(|e| Error::Mdns(e.to_string()))?;
+-        #[cfg(not(target_os = "macos"))]
++        // Log what the Bonjour daemon announces and any errors (not every answer it sends).
++        #[cfg(not(any(target_os = "macos", target_os = "android")))]
++        if let Ok(events) = mdns.monitor() {
++            std::thread::spawn(move || {
++                while let Ok(event) = events.recv() {
++                    if !matches!(event, mdns_sd::DaemonEvent::Respond(_)) {
++                        info!("mDNS: {event:?}");
++                    }
++                }
++            });
++        }
++        #[cfg(not(any(target_os = "macos", target_os = "android")))]
+         let mut mdns_fullnames = Vec::new();
+-        #[cfg(not(target_os = "macos"))]
++        #[cfg(not(any(target_os = "macos", target_os = "android")))]
+         {
+-            let host_name = format!("{}.local.", identity.name.replace(' ', "-"));
++            // A DNS-safe host name of its own ("Gupta's TV" -> "Guptas-TV-Remote.local."), so it
++            // can't clash with another service on this device that uses the plain name.
++            let host_label: String = identity
++                .name
++                .replace(' ', "-")
++                .chars()
++                .filter(|c| c.is_ascii_alphanumeric() || *c == '-')
++                .collect();
++            let host_name = format!("{}-Remote.local.", host_label.trim_matches('-'));
+             for (service_type, port, properties) in services {
+                 let info = ServiceInfo::new(
+                     service_type,
+@@ -360,7 +423,9 @@ impl AtvServer {
+         info!("PIN       : {:04}", config.pin);
+         info!("MRP       : {ip}:{mrp_port}");
+         info!("Companion : {ip}:{companion_port}");
+-        info!("AirPlay   : {ip}:{airplay_port}");
++        if ADVERTISE_AIRPLAY_STUB {
++            info!("AirPlay   : {ip}:{airplay_port}");
++        }
+         if let Some(port) = actual_ui_port {
+             info!("Debug UI  : http://127.0.0.1:{port}");
+         }
+@@ -377,14 +442,16 @@ impl AtvServer {
+             mouse_mode,
+             trackpad_mode,
+             delegate,
++            text_focus_tx,
+             shutdown_tx,
+             tasks,
+             #[cfg(target_os = "macos")]
+             dns_sd_children,
+-            #[cfg(not(target_os = "macos"))]
++            #[cfg(not(any(target_os = "macos", target_os = "android")))]
+             mdns,
+-            #[cfg(not(target_os = "macos"))]
++            #[cfg(not(any(target_os = "macos", target_os = "android")))]
+             mdns_fullnames,
++            bonjour,
+         })
+     }
+ 
+@@ -413,6 +480,11 @@ impl AtvServer {
+         self.airplay_port
+     }
+ 
++    /// The Bonjour services to advertise (already advertised here except on Android).
++    pub fn bonjour_services(&self) -> &[BonjourService] {
++        &self.bonjour
++    }
++
+     pub fn ui_port(&self) -> Option<u16> {
+         self.ui_port
+     }
+@@ -429,6 +501,12 @@ impl AtvServer {
+         TrackpadMode::from_u8(self.trackpad_mode.load(Ordering::SeqCst))
+     }
+ 
++    /// Switches the touch surface for now without saving it as the user's choice (the app in front asked for it).
++    pub fn set_trackpad_mode_transient(&self, mode: TrackpadMode) {
++        self.trackpad_mode.store(mode as u8, Ordering::SeqCst);
++        self.mouse_mode.store(mode.is_mouse(), Ordering::SeqCst);
++    }
++
+     pub fn set_trackpad_mode(&self, mode: TrackpadMode) {
+         self.trackpad_mode.store(mode as u8, Ordering::SeqCst);
+         self.mouse_mode.store(mode.is_mouse(), Ordering::SeqCst);
+@@ -468,6 +546,27 @@ impl AtvServer {
+         new_mode.is_mouse()
+     }
+ 
++    /// Tell connected iPhones whether a text field on this device has focus, so the Apple TV
++    /// Remote can show its keyboard. `Some(text)` is the field's current text.
++    pub fn set_text_focus(&self, text: Option<String>) {
++        self.text_focus_tx.send_if_modified(|current| match (current.as_mut(), text) {
++            (None, None) => false,
++            (Some(_), None) => {
++                *current = None;
++                true
++            }
++            (None, Some(text)) => {
++                *current = Some(TextFocus { session_uuid: rand::random(), text });
++                true
++            }
++            // Same field, new text: keep it for the next _tiStart without restarting the keyboard.
++            (Some(focus), Some(text)) => {
++                focus.text = text;
++                false
++            }
++        });
++    }
++
+     /// Unregister Bonjour services and stop all listeners.
+     pub async fn stop(self) {
+         let _ = self.shutdown_tx.send(true);
+@@ -477,7 +576,7 @@ impl AtvServer {
+             let _ = child.kill().await;
+         }
+ 
+-        #[cfg(not(target_os = "macos"))]
++        #[cfg(not(any(target_os = "macos", target_os = "android")))]
+         {
+             for fullname in &self.mdns_fullnames {
+                 if let Err(e) = self.mdns.unregister(fullname) {
+@@ -500,11 +599,21 @@ impl AtvServer {
+ 
+ /// Bind `preferred`, falling back to an OS-assigned port when it is occupied.
+ /// The chosen port is advertised via Bonjour, so iOS finds the service either way.
++/// Listens on IPv6 and IPv4 where the system allows both on one socket: Android's Bonjour
++/// responder also hands out the device's IPv6 addresses, and iPhones try those first.
++async fn bind_any(port: u16) -> std::io::Result<TcpListener> {
++    match TcpListener::bind((std::net::Ipv6Addr::UNSPECIFIED, port)).await {
++        Ok(listener) => Ok(listener),
++        Err(e) if e.kind() == std::io::ErrorKind::AddrInUse => Err(e),
++        Err(_) => TcpListener::bind((Ipv4Addr::UNSPECIFIED, port)).await,
++    }
++}
++
+ async fn bind_with_fallback(preferred: u16, label: &str) -> Result<(TcpListener, u16)> {
+-    match TcpListener::bind((Ipv4Addr::UNSPECIFIED, preferred)).await {
++    match bind_any(preferred).await {
+         Ok(listener) => Ok((listener, preferred)),
+         Err(e) if e.kind() == std::io::ErrorKind::AddrInUse => {
+-            let listener = TcpListener::bind((Ipv4Addr::UNSPECIFIED, 0)).await?;
++            let listener = bind_any(0).await?;
+             let port = listener.local_addr()?.port();
+             warn!(
+                 "{label} port {preferred} is already in use ({e}); \
+@@ -550,6 +659,7 @@ async fn companion_loop(
+     inspector: Arc<InspectorHub>,
+     trackpad_mode: Arc<AtomicU8>,
+     mouse_mode: Arc<AtomicBool>,
++    text_focus: watch::Receiver<Option<TextFocus>>,
+     mut shutdown: watch::Receiver<bool>,
+ ) {
+     let registry = Arc::new(Mutex::new(DeviceRegistry::new(Duration::from_secs(24 * 3600))));
+@@ -573,10 +683,11 @@ async fn companion_loop(
+         let mouse_mode = mouse_mode.clone();
+         let registry = registry.clone();
+         let active_tracker = active_tracker.clone();
++        let text_focus = text_focus.clone();
+         let mut client_shutdown = shutdown.clone();
+         tokio::spawn(async move {
+             tokio::select! {
+-                _ = handle_companion(stream, identity, pin, delegate, inspector, trackpad_mode, mouse_mode, registry, active_tracker) => {},
++                _ = handle_companion(stream, identity, pin, delegate, inspector, trackpad_mode, mouse_mode, registry, active_tracker, text_focus) => {},
+                 _ = client_shutdown.changed() => {},
+             }
+         });
+@@ -593,8 +704,13 @@ async fn handle_companion(
+     mouse_mode: Arc<AtomicBool>,
+     registry: Arc<Mutex<DeviceRegistry>>,
+     active_tracker: Arc<Mutex<ActiveConnectionTracker>>,
++    mut text_focus: watch::Receiver<Option<TextFocus>>,
+ ) {
+-    let peer_addr = stream.peer_addr().ok();
++    // IPv4 clients on the dual-stack socket show up as ::ffff:a.b.c.d.
++    let peer_addr = stream
++        .peer_addr()
++        .ok()
++        .map(|a| SocketAddr::new(a.ip().to_canonical(), a.port()));
+     let peer = peer_addr
+         .as_ref()
+         .map(|a| a.to_string())
+@@ -629,12 +745,44 @@ async fn handle_companion(
+         conn_id,
+         peer_ip.to_string(),
+         session_established,
++        text_focus.clone(),
+     );
+     let timeout_deadline = session.timeout_deadline();
+     let mut disconnect_reason = "peer_closed".to_string();
+ 
+     const MAX_FRAME_LENGTH: usize = 2 * 1024 * 1024; // 2MB protection against malformed frames
+ 
++    // Frames are read in their own task: read_exact is not cancel-safe, and the loop below also
++    // waits for keyboard (text focus) changes, which must never interrupt a half-read frame.
++    let (frame_tx, mut frame_rx) = mpsc::channel::<std::result::Result<([u8; 4], Vec<u8>), String>>(16);
++    let frame_reader = tokio::spawn(async move {
++        loop {
++            let mut header = [0u8; 4];
++            if let Err(e) = reader.read_exact(&mut header).await {
++                let reason = if e.kind() == std::io::ErrorKind::UnexpectedEof {
++                    "peer_closed".to_string()
++                } else {
++                    format!("error:{e}")
++                };
++                let _ = frame_tx.send(Err(reason)).await;
++                break;
++            }
++            let length = u32::from_be_bytes([0, header[1], header[2], header[3]]) as usize;
++            if length > MAX_FRAME_LENGTH {
++                let _ = frame_tx.send(Err(format!("error:frame too large ({length} bytes)"))).await;
++                break;
++            }
++            let mut payload = vec![0u8; length];
++            if let Err(e) = reader.read_exact(&mut payload).await {
++                let _ = frame_tx.send(Err(format!("incomplete_frame:{e}"))).await;
++                break;
++            }
++            if frame_tx.send(Ok((header, payload))).await.is_err() {
++                break;
++            }
++        }
++    });
++
+     loop {
+         let deadline = *timeout_deadline.lock().await;
+         let timeout_fut = async {
+@@ -646,18 +794,24 @@ async fn handle_companion(
+             }
+         };
+ 
+-        let mut header = [0u8; 4];
+-        tokio::select! {
+-            res = reader.read_exact(&mut header) => {
+-                match res {
+-                    Ok(_) => {}
+-                    Err(e) => {
+-                        if e.kind() != std::io::ErrorKind::UnexpectedEof {
+-                            disconnect_reason = format!("error:{e}");
+-                        }
++        let (header, payload) = tokio::select! {
++            frame = frame_rx.recv() => match frame {
++                Some(Ok(frame)) => frame,
++                Some(Err(reason)) => {
++                    disconnect_reason = reason;
++                    break;
++                }
++                None => break,
++            },
++            changed = text_focus.changed() => {
++                if changed.is_ok() {
++                    if let Err(e) = session.send_text_focus().await {
++                        disconnect_reason = format!("error:{e}");
++                        warn!("companion error: {e}");
+                         break;
+                     }
+                 }
++                continue;
+             }
+             _ = abort_rx.changed() => {
+                 disconnect_reason = "superseded".to_string();
+@@ -670,31 +824,23 @@ async fn handle_companion(
+                     info!("companion connection from {peer} timed out without remote session; closing to free channel");
+                     break;
+                 }
++                *timeout_deadline.lock().await = None;
++                continue;
+             }
+-        }
++        };
+         let Some(frame_type) = FrameType::from_u8(header[0]) else {
+             disconnect_reason = format!("error:unknown frame type {}", header[0]);
+             warn!("unknown frame type {}", header[0]);
+             break;
+         };
+-        let length = u32::from_be_bytes([0, header[1], header[2], header[3]]) as usize;
+-        if length > MAX_FRAME_LENGTH {
+-            disconnect_reason = format!("error:frame too large ({length} bytes)");
+-            warn!("companion frame exceeds limit: {length} bytes from {peer}");
+-            break;
+-        }
+-        let mut payload = vec![0u8; length];
+-        if let Err(e) = reader.read_exact(&mut payload).await {
+-            disconnect_reason = format!("incomplete_frame:{e}");
+-            break;
+-        }
+-        debug!("companion frame={:?} length={length}", frame_type);
++        debug!("companion frame={:?} length={}", frame_type, payload.len());
+         if let Err(e) = session.handle_frame(frame_type, &payload, &header).await {
+             disconnect_reason = format!("error:{e}");
+             warn!("companion error: {e}");
+             break;
+         }
+     }
++    frame_reader.abort();
+ 
+     {
+         let mut tracker = active_tracker.lock().await;
+diff --git a/crates/atv-core/src/session.rs b/crates/atv-core/src/session.rs
+index d136ec7..b5a9b71 100644
+--- a/crates/atv-core/src/session.rs
++++ b/crates/atv-core/src/session.rs
+@@ -7,7 +7,7 @@ use std::sync::Arc;
+ use ed25519_dalek::{Signer, SigningKey};
+ use tokio::io::AsyncWriteExt;
+ use tokio::net::tcp::OwnedWriteHalf;
+-use tokio::sync::Mutex;
++use tokio::sync::{watch, Mutex};
+ use tracing::{debug, info, warn};
+ use x25519_dalek::{PublicKey as X25519PublicKey, StaticSecret};
+ 
+@@ -19,6 +19,7 @@ use crate::inspector::InspectorHub;
+ use crate::opack::{self, Value};
+ use crate::registry::{ActiveConnectionTracker, DeviceRegistry};
+ use crate::srp::SrpServer;
++use crate::text_input::{self, TextFocus};
+ use crate::tlv::{self, tags};
+ use crate::FrameType;
+ 
+@@ -29,6 +30,8 @@ pub const MEDIA_CONTROL_VOLUME: u64 = 0x0100;
+ 
+ const SWIPE_MIN_DISTANCE: f64 = 150.0; // touchpad units; the surface is 1000x1000
+ const TAP_MAX_DISTANCE: f64 = 60.0; // below this a touch sequence counts as a tap
++/// Holding play/pause this long opens the keyboard (reported as the "keyboard" button).
++const KEYBOARD_HOLD: std::time::Duration = std::time::Duration::from_millis(800);
+ 
+ /// Fixed `altIRK` value from `fake_atv._pair_setup_m5`.
+ const ALT_IRK: [u8; 16] = [
+@@ -99,6 +102,15 @@ pub struct CompanionSession {
+     peer_ip: String,
+     device_id: Option<String>,
+     timeout_deadline: Arc<Mutex<Option<tokio::time::Instant>>>,
++    text_focus: watch::Receiver<Option<TextFocus>>,
++    /// Session UUID of the keyboard session this iPhone was told about, if any.
++    announced_text_session: Option<[u8; 16]>,
++    /// When play/pause went down, to tell a hold from a press.
++    play_pause_down_at: Option<std::time::Instant>,
++    /// When the TV (home) button went down; held, it switches the touch surface to a cursor.
++    home_down_at: Option<std::time::Instant>,
++    /// When Back (menu) went down; held, it is reported as the "dock" button instead of Back.
++    menu_down_at: Option<std::time::Instant>,
+ }
+ 
+ impl CompanionSession {
+@@ -115,6 +127,7 @@ impl CompanionSession {
+         conn_id: u64,
+         peer_ip: String,
+         session_established: Arc<AtomicBool>,
++        text_focus: watch::Receiver<Option<TextFocus>>,
+     ) -> Self {
+         let signing_key = SigningKey::from_bytes(&identity.private_key);
+         let auth_pub = signing_key.verifying_key().to_bytes();
+@@ -155,6 +168,11 @@ impl CompanionSession {
+             peer_ip,
+             device_id: None,
+             timeout_deadline: Arc::new(Mutex::new(None)),
++            text_focus,
++            announced_text_session: None,
++            play_pause_down_at: None,
++            home_down_at: None,
++            menu_down_at: None,
+         }
+     }
+ 
+@@ -690,6 +708,9 @@ impl CompanionSession {
+                             "NowPlayingInfo" => {
+                                 self.send_event(&event_name, xid, None).await?;
+                             }
++                            "_tiStarted" => {
++                                self.send_text_focus().await?;
++                            }
+                             "SystemStatus" | "TVSystemStatus" => {
+                                 self.send_event(
+                                     &event_name,
+@@ -724,12 +745,29 @@ impl CompanionSession {
+                 self.handle_media_control(&content, xid).await?;
+             }
+             Some("_tiStart") => {
+-                self.send_response(
+-                    xid,
+-                    Some(Value::dict(vec![Value::kv("_tiE", Value::Bool(false))])),
+-                    0,
+-                )
+-                .await?;
++                let focus = self.text_focus.borrow().clone();
++                self.delegate.on_event(
++                    EventKind::TextInput,
++                    if focus.is_some() { "<< _tiStart (field focused)" } else { "<< _tiStart (no field)" },
++                );
++                let content = match focus {
++                    Some(focus) => {
++                        self.announced_text_session = Some(focus.session_uuid);
++                        Value::dict(vec![
++                            Value::kv("_tiV", Value::Int(1)),
++                            Value::kv("_tiD", Value::Bytes(text_input::encode_session(&focus))),
++                        ])
++                    }
++                    None => Value::dict(vec![Value::kv("_tiE", Value::Bool(false))]),
++                };
++                self.send_response(xid, Some(content), 0).await?;
++            }
++            Some("_tiC") => {
++                self.delegate.on_event(EventKind::TextInput, "<< _tiC");
++                if xid.is_some() {
++                    self.send_response(xid, None, 0).await?;
++                }
++                self.handle_text_operation(&content);
+             }
+             Some("FetchLaunchableApplicationsEvent") => {
+                 self.send_response(
+@@ -820,12 +858,147 @@ impl CompanionSession {
+         Ok(())
+     }
+ 
++    /// Push the current text focus to this iPhone: `_tiStarted` opens its keyboard, `_tiStopped`
++    /// closes it. Only over the verified, encrypted channel, and only when the state changed.
++    pub async fn send_text_focus(&mut self) -> Result<()> {
++        if self.cipher.is_none() {
++            return Ok(());
++        }
++        let focus = self.text_focus.borrow().clone();
++        let xid = Some(rand::random::<u32>() as u64);
++        match focus {
++            Some(focus) if self.announced_text_session != Some(focus.session_uuid) => {
++                self.announced_text_session = Some(focus.session_uuid);
++                info!(">> _tiStarted: text field focused");
++                self.delegate.on_event(EventKind::TextInput, ">> _tiStarted");
++                let content = Value::dict(vec![
++                    Value::kv("_tiV", Value::Int(1)),
++                    Value::kv("_tiD", Value::Bytes(text_input::encode_session(&focus))),
++                ]);
++                self.send_event("_tiStarted", xid, Some(content)).await
++            }
++            None if self.announced_text_session.is_some() => {
++                self.announced_text_session = None;
++                info!(">> _tiStopped: text field lost focus");
++                self.delegate.on_event(EventKind::TextInput, ">> _tiStopped");
++                self.send_event("_tiStopped", xid, None).await
++            }
++            _ => Ok(()),
++        }
++    }
++
++    fn handle_text_operation(&mut self, content: &Value) {
++        let Some(data) = content.get("_tiD").and_then(Value::as_bytes) else {
++            return;
++        };
++        let Some(op) = text_input::decode_operation(data) else {
++            warn!("could not decode keyboard input");
++            return;
++        };
++        let current = self.text_focus.borrow().as_ref().map(|f| f.session_uuid);
++        let Some(current) = current else {
++            self.delegate.on_event(EventKind::TextInput, "<< _tiC ignored: no text field");
++            return;
++        };
++        let target = match op.session_uuid.as_deref() {
++            None => "none",
++            Some(uuid) if uuid == current.as_slice() => "current",
++            Some(_) => "other",
++        };
++        if op.insertion.is_empty() && op.deletion_count == 0 && op.text_to_assert.is_none() {
++            self.delegate.on_event(
++                EventKind::TextInput,
++                &format!("<< _tiC with nothing decoded, session {target}, fields {:?}", op.fields),
++            );
++        } else if op.fields.iter().any(|f| f.starts_with("acceptedCandidate")) {
++            self.delegate.on_event(
++                EventKind::TextInput,
++                &format!("<< _tiC suggestion accepted, session {target}, fields {:?}", op.fields),
++            );
++        } else if target == "other" {
++            self.delegate.on_event(EventKind::TextInput, "<< _tiC for another session");
++        }
++        debug!(
++            "<< _tiC: insert {} chars, delete {}, assert {}",
++            op.insertion.chars().count(),
++            op.deletion_count,
++            op.text_to_assert.is_some()
++        );
++        self.delegate.on_text_input(
++            &op.insertion,
++            op.deletion_count,
++            op.text_to_assert.as_deref(),
++        );
++    }
++
+     async fn handle_hid_command(&mut self, content: &Value, xid: Option<u64>) -> Result<()> {
+         let command = content.get("_hidC").and_then(Value::as_int).unwrap_or(0);
+         let state = content.get("_hBtS").and_then(Value::as_int).unwrap_or(0);
+-        let command_name = hid_command_name(command);
++        let mut command_name = hid_command_name(command);
+         self.send_response(xid, None, 0).await?;
+ 
++        if command_name == "play_pause" {
++            if state == 1 {
++                // Keep the first down if the phone repeats it while held, unless it is stale
++                // (a lost button-up).
++                let fresh = self
++                    .play_pause_down_at
++                    .is_some_and(|t| t.elapsed() < std::time::Duration::from_secs(5));
++                if !fresh {
++                    self.play_pause_down_at = Some(std::time::Instant::now());
++                }
++            } else if state == 2 {
++                let held = self.play_pause_down_at.take().map(|t| t.elapsed());
++                if held.is_some_and(|d| d >= KEYBOARD_HOLD) {
++                    command_name = "keyboard".into();
++                }
++            }
++        }
++
++        if command_name == "menu" {
++            if state == 1 {
++                let fresh = self
++                    .menu_down_at
++                    .is_some_and(|t| t.elapsed() < std::time::Duration::from_secs(5));
++                if !fresh {
++                    self.menu_down_at = Some(std::time::Instant::now());
++                }
++            } else if state == 2 {
++                let held = self.menu_down_at.take().map(|t| t.elapsed());
++                if held.is_some_and(|d| d >= KEYBOARD_HOLD) {
++                    // Held: reach the TV's dock (Gupta's TV) instead of going back.
++                    command_name = "dock".into();
++                }
++            }
++        }
++
++        if command_name == "home" {
++            if state == 1 {
++                let fresh = self
++                    .home_down_at
++                    .is_some_and(|t| t.elapsed() < std::time::Duration::from_secs(5));
++                if !fresh {
++                    self.home_down_at = Some(std::time::Instant::now());
++                }
++            } else if state == 2 {
++                let held = self.home_down_at.take().map(|t| t.elapsed());
++                if held.is_some_and(|d| d >= KEYBOARD_HOLD) {
++                    // Held: switch between D-pad swipes and a cursor; no Home key.
++                    let mode = if TrackpadMode::from_u8(self.trackpad_mode.load(Ordering::SeqCst))
++                        == TrackpadMode::Mouse
++                    {
++                        TrackpadMode::Direction
++                    } else {
++                        TrackpadMode::Mouse
++                    };
++                    self.trackpad_mode.store(mode as u8, Ordering::SeqCst);
++                    self._mouse_mode.store(mode.is_mouse(), Ordering::SeqCst);
++                    self.delegate.on_event(EventKind::TrackpadMode, mode.as_str());
++                    return Ok(());
++                }
++            }
++        }
++
+         if state == 2 {
+             match command_name.as_str() {
+                 "volume_up" | "volume_down" => {
+diff --git a/crates/atv-core/src/text_input.rs b/crates/atv-core/src/text_input.rs
+new file mode 100644
+index 0000000..97805d6
+--- /dev/null
++++ b/crates/atv-core/src/text_input.rs
+@@ -0,0 +1,362 @@
++//! Remote Text Input: the keyboard the Apple TV Remote shows when a text field on the TV is focused.
++//!
++//! The TV announces a focused field with a `_tiStarted` event (and answers `_tiStart`) carrying
++//! `_tiD`, an NSKeyedArchiver archive of the field's `RTIDocumentTraits`, `RTIDocumentState` and a
++//! session UUID. The iPhone then sends `_tiC` events whose archive holds `RTITextOperations`:
++//! inserted text, a delete count, or the whole text to assert. `_tiStopped` ends the session.
++//! The archive layout follows what a real Apple TV sends (keys and classes only; values are ours).
++
++use plist::{Dictionary, Uid, Value};
++
++/// A text field the TV reported as focused.
++#[derive(Debug, Clone, PartialEq)]
++pub struct TextFocus {
++    pub session_uuid: [u8; 16],
++    pub text: String,
++}
++
++/// What the iPhone typed, from one `_tiC` event.
++#[derive(Debug, Default, Clone, PartialEq)]
++pub struct TextOperation {
++    pub session_uuid: Option<Vec<u8>>,
++    pub insertion: String,
++    pub deletion_count: u64,
++    pub text_to_assert: Option<String>,
++    /// Key names in the operation and its keyboard output (never their values), to spot
++    /// operation kinds this decoder does not read.
++    pub fields: Vec<String>,
++}
++
++/// Builds the `$objects` table of a keyed archive; index 0 is `$null`.
++struct Archive {
++    objects: Vec<Value>,
++}
++
++impl Archive {
++    fn new() -> Self {
++        Self { objects: vec![Value::String("$null".into())] }
++    }
++
++    fn add(&mut self, value: Value) -> Value {
++        self.objects.push(value);
++        Value::Uid(Uid::new((self.objects.len() - 1) as u64))
++    }
++
++    /// Reserve a slot to fill later, so a parent can be added before its children.
++    fn reserve(&mut self) -> (usize, Value) {
++        self.objects.push(Value::String("$null".into()));
++        let index = self.objects.len() - 1;
++        (index, Value::Uid(Uid::new(index as u64)))
++    }
++
++    fn class(&mut self, name: &str, extra: &[&str]) -> Value {
++        let mut classes = vec![Value::String(name.into())];
++        classes.extend(extra.iter().map(|c| Value::String((*c).into())));
++        classes.push(Value::String("NSObject".into()));
++        self.add(dict(vec![
++            ("$classname", Value::String(name.into())),
++            ("$classes", Value::Array(classes)),
++        ]))
++    }
++
++    fn finish(self, top: Vec<(&str, Value)>) -> Vec<u8> {
++        let archive = dict(vec![
++            ("$version", Value::Integer(100000.into())),
++            ("$archiver", Value::String("NSKeyedArchiver".into())),
++            ("$top", dict(top)),
++            ("$objects", Value::Array(self.objects)),
++        ]);
++        let mut out = Vec::new();
++        archive.to_writer_binary(&mut out).expect("writing to a Vec cannot fail");
++        out
++    }
++}
++
++fn dict(entries: Vec<(&str, Value)>) -> Value {
++    let mut d = Dictionary::new();
++    for (k, v) in entries {
++        d.insert(k.to_string(), v);
++    }
++    Value::Dictionary(d)
++}
++
++/// `_tiD` for `_tiStarted` and the `_tiStart` response: a focused search field holding `focus.text`.
++pub fn encode_session(focus: &TextFocus) -> Vec<u8> {
++    let mut a = Archive::new();
++
++    // RTIDocumentState { docSt: TIDocumentState { contextBeforeInput } }
++    let (doc_state_index, doc_state) = a.reserve();
++    let mut ti_doc_state = Dictionary::new();
++    if !focus.text.is_empty() {
++        let text = a.add(Value::String(focus.text.clone()));
++        ti_doc_state.insert("contextBeforeInput".into(), text);
++    }
++    let ti_doc_state_class = a.class("TIDocumentState", &[]);
++    ti_doc_state.insert("$class".into(), ti_doc_state_class);
++    let ti_doc_state = a.add(Value::Dictionary(ti_doc_state));
++    let doc_state_class = a.class("RTIDocumentState", &[]);
++    a.objects[doc_state_index] = dict(vec![
++        ("docSt", ti_doc_state),
++        ("originatedFromSource", Value::Boolean(false)),
++        ("$class", doc_state_class),
++    ]);
++
++    // RTIDocumentTraits for a search field that accepts the iPhone keyboard.
++    let app_id = a.add(Value::String(String::new()));
++    let bundle_id = a.add(Value::String("com.apple.TVWatchList".into()));
++    let app_name = a.add(Value::String("TV".into()));
++    let traits_class = a.class("TITextInputTraits", &[]);
++    let ti_traits = a.add(dict(vec![
++        ("flags", Value::Integer(1417693830.into())),
++        ("auxFlags", Value::Integer(1.into())),
++        ("version", Value::Integer(2.into())),
++        ("$class", traits_class),
++    ]));
++    let user_info = encode_user_info(&mut a);
++    let doc_traits_class = a.class("RTIDocumentTraits", &[]);
++    let doc_traits = a.add(dict(vec![
++        ("aId", app_id),
++        ("bId", bundle_id),
++        ("locApp", app_name),
++        ("a2bId", Value::Boolean(true)),
++        ("tiTraits", ti_traits),
++        ("ctxId", Value::Integer(1.into())),
++        ("cfmType", Value::Integer(87.into())),
++        ("layerId", Value::Integer(1.into())),
++        ("traitsMask", Value::Integer(576.into())),
++        ("userInfo", user_info),
++        ("$class", doc_traits_class),
++    ]));
++
++    let session_uuid = a.add(Value::Data(focus.session_uuid.to_vec()));
++    a.finish(vec![
++        ("documentTraits", doc_traits),
++        ("sessionUUID", session_uuid),
++        ("documentState", doc_state),
++    ])
++}
++
++/// The keyboard options a real Apple TV search field sends, value for value.
++fn encode_user_info(a: &mut Archive) -> Value {
++    let no = a.add(Value::Boolean(false));
++    let yes = a.add(Value::Boolean(true));
++    let zero = a.add(Value::Integer(0.into()));
++    let delegate = a.add(Value::String("UISearchBarTextField".into()));
++    let disabled_key = a.add(Value::String("disabled".into()));
++    let dict_class = a.class("NSDictionary", &[]);
++    let first_responder = a.add(dict(vec![
++        ("NS.keys", Value::Array(vec![disabled_key])),
++        ("NS.objects", Value::Array(vec![zero.clone()])),
++        ("$class", dict_class.clone()),
++    ]));
++    let entries: Vec<(&str, Value)> = vec![
++        ("ShouldSuppressSoftwareKeyboard", no.clone()),
++        ("ShouldSuppressSoftwareKeyboardForKeyboardCamera", no.clone()),
++        ("RTIInputDelegateClassName", delegate),
++        ("UseAutomaticEndpointing", no.clone()),
++        ("ReturnKeyEnabled", no.clone()),
++        ("ShouldUseDictationSearchFieldBehavior", zero.clone()),
++        ("SuppressSoftwareKeyboard", no.clone()),
++        ("ForceFloatingKeyboard", no.clone()),
++        ("HasCustomInputViewController", no.clone()),
++        ("CorrectionLearningAllowed", yes),
++        ("SuppressAssistantBar", no.clone()),
++        ("ForceDisableDictation", no.clone()),
++        ("ForceEnableDictation", no.clone()),
++        ("HasNextKeyResponder", zero.clone()),
++        ("InputViewHiddenCount", zero.clone()),
++        ("DisableBecomeFirstResponder", first_responder),
++        ("HasPreviousKeyResponder", zero),
++        ("AcceptsDictationResults", no),
++    ];
++    let mut keys = Vec::new();
++    let mut values = Vec::new();
++    for (k, v) in entries {
++        keys.push(a.add(Value::String(k.into())));
++        values.push(v);
++    }
++    a.add(dict(vec![
++        ("NS.keys", Value::Array(keys)),
++        ("NS.objects", Value::Array(values)),
++        ("$class", dict_class),
++    ]))
++}
++
++/// Read the `RTITextOperations` archive of a `_tiC` event.
++pub fn decode_operation(data: &[u8]) -> Option<TextOperation> {
++    let archive = Value::from_reader(std::io::Cursor::new(data)).ok()?;
++    let archive = archive.as_dictionary()?;
++    let objects = archive.get("$objects")?.as_array()?;
++    let resolve = |v: &Value| -> Option<Value> {
++        match v {
++            Value::Uid(uid) => objects.get(uid.get() as usize).cloned(),
++            other => Some(other.clone()),
++        }
++    };
++    let top = archive.get("$top")?.as_dictionary()?;
++    let ops = resolve(top.get("textOperations")?)?;
++    let ops = ops.as_dictionary()?;
++
++    let mut op = TextOperation::default();
++    let names = |d: &Dictionary| d.keys().filter(|k| *k != "$class").cloned().collect::<Vec<_>>();
++    op.fields = names(ops);
++    if let Some(uuid) = ops.get("targetSessionUUID").and_then(|v| resolve(v)) {
++        op.session_uuid = uuid
++            .as_dictionary()
++            .and_then(|d| d.get("NS.uuidbytes"))
++            .and_then(|b| b.as_data())
++            .map(|b| b.to_vec());
++    }
++    if let Some(output) = ops.get("keyboardOutput").and_then(|v| resolve(v)) {
++        if let Some(output) = output.as_dictionary() {
++            op.fields.extend(names(output).into_iter().map(|k| format!("keyboardOutput.{k}")));
++            if let Some(text) = output.get("insertionText").and_then(|v| resolve(v)) {
++                op.insertion = text.as_string().unwrap_or_default().to_string();
++            }
++            if let Some(count) = output.get("deletionCount").and_then(|v| resolve(v)) {
++                op.deletion_count = count.as_unsigned_integer().unwrap_or(0);
++            }
++            // A QuickType suggestion or autocorrection: `candidate` replaces the typed `input`.
++            if let Some(candidate) = output.get("acceptedCandidate").and_then(|v| resolve(v)) {
++                if let Some(candidate) = candidate.as_dictionary() {
++                    let text = |key: &str| {
++                        candidate
++                            .get(key)
++                            .and_then(|v| resolve(v))
++                            .and_then(|v| v.as_string().map(str::to_string))
++                    };
++                    for k in names(candidate) {
++                        let len = text(&k).map(|t| format!("={}", t.chars().count())).unwrap_or_default();
++                        op.fields.push(format!("acceptedCandidate.{k}{len}"));
++                    }
++                    if let Some(replacement) = text("candidate") {
++                        let typed = text("input").unwrap_or_default();
++                        op.deletion_count += typed.chars().count() as u64;
++                        op.insertion.push_str(&replacement);
++                    }
++                }
++            }
++        }
++    }
++    if let Some(text) = ops.get("textToAssert").and_then(|v| resolve(v)) {
++        op.text_to_assert = text.as_string().map(str::to_string);
++    }
++    Some(op)
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    fn top_object<'a>(archive: &'a Dictionary, key: &str) -> &'a Value {
++        let objects = archive.get("$objects").unwrap().as_array().unwrap();
++        let uid = archive.get("$top").unwrap().as_dictionary().unwrap().get(key).unwrap();
++        match uid {
++            Value::Uid(u) => &objects[u.get() as usize],
++            _ => panic!("not a UID"),
++        }
++    }
++
++    #[test]
++    fn session_archive_has_uuid_and_text() {
++        let focus = TextFocus { session_uuid: *b"0123456789abcdef", text: "star".into() };
++        let bytes = encode_session(&focus);
++        let archive = Value::from_reader(std::io::Cursor::new(&bytes)).unwrap();
++        let archive = archive.as_dictionary().unwrap();
++        assert_eq!(top_object(archive, "sessionUUID").as_data().unwrap(), b"0123456789abcdef");
++
++        let objects = archive.get("$objects").unwrap().as_array().unwrap();
++        assert_eq!(objects[0].as_string(), Some("$null"));
++        let resolve = |v: &Value| match v {
++            Value::Uid(u) => objects[u.get() as usize].clone(),
++            o => o.clone(),
++        };
++        let state = top_object(archive, "documentState").as_dictionary().unwrap();
++        let doc_st = resolve(state.get("docSt").unwrap());
++        let text = resolve(doc_st.as_dictionary().unwrap().get("contextBeforeInput").unwrap());
++        assert_eq!(text.as_string(), Some("star"));
++        let traits = top_object(archive, "documentTraits").as_dictionary().unwrap();
++        let class = resolve(traits.get("$class").unwrap());
++        assert_eq!(
++            class.as_dictionary().unwrap().get("$classname").unwrap().as_string(),
++            Some("RTIDocumentTraits")
++        );
++    }
++
++    /// The same shape pyatv sends to a real Apple TV for "insert text".
++    fn insertion_archive(text: &str) -> Vec<u8> {
++        let mut a = Archive::new();
++        let (ops_index, ops) = a.reserve();
++        let insertion = a.add(Value::String(text.into()));
++        let out_class = a.class("TIKeyboardOutput", &[]);
++        let output = a.add(dict(vec![("insertionText", insertion), ("$class", out_class)]));
++        let uuid_class = a.class("NSUUID", &[]);
++        let uuid = a.add(dict(vec![
++            ("NS.uuidbytes", Value::Data(b"0123456789abcdef".to_vec())),
++            ("$class", uuid_class),
++        ]));
++        let ops_class = a.class("RTITextOperations", &[]);
++        a.objects[ops_index] = dict(vec![
++            ("keyboardOutput", output),
++            ("targetSessionUUID", uuid),
++            ("$class", ops_class),
++        ]);
++        a.finish(vec![("textOperations", ops)])
++    }
++
++    #[test]
++    fn decodes_insertion() {
++        let op = decode_operation(&insertion_archive("hello world")).unwrap();
++        assert_eq!(op.insertion, "hello world");
++        assert_eq!(op.deletion_count, 0);
++        assert_eq!(op.session_uuid.as_deref(), Some(&b"0123456789abcdef"[..]));
++    }
++
++    #[test]
++    fn decodes_deletion_and_assert() {
++        let mut a = Archive::new();
++        let (ops_index, ops) = a.reserve();
++        let out_class = a.class("TIKeyboardOutput", &[]);
++        let output = a.add(dict(vec![
++            ("deletionCount", Value::Integer(2.into())),
++            ("$class", out_class),
++        ]));
++        let assert_text = a.add(Value::String("st".into()));
++        let ops_class = a.class("RTITextOperations", &[]);
++        a.objects[ops_index] = dict(vec![
++            ("keyboardOutput", output),
++            ("textToAssert", assert_text),
++            ("$class", ops_class),
++        ]);
++        let op = decode_operation(&a.finish(vec![("textOperations", ops)])).unwrap();
++        assert_eq!(op.deletion_count, 2);
++        assert_eq!(op.text_to_assert.as_deref(), Some("st"));
++    }
++
++    #[test]
++    fn decodes_accepted_candidate() {
++        let mut a = Archive::new();
++        let (ops_index, ops) = a.reserve();
++        let candidate_text = a.add(Value::String("hello".into()));
++        let typed = a.add(Value::String("hel".into()));
++        let candidate_class = a.class("TIKeyboardCandidateSingle", &["TIKeyboardCandidate"]);
++        let candidate = a.add(dict(vec![
++            ("candidate", candidate_text),
++            ("input", typed),
++            ("$class", candidate_class),
++        ]));
++        let out_class = a.class("TIKeyboardOutput", &[]);
++        let output = a.add(dict(vec![("acceptedCandidate", candidate), ("$class", out_class)]));
++        let ops_class = a.class("RTITextOperations", &[]);
++        a.objects[ops_index] = dict(vec![("keyboardOutput", output), ("$class", ops_class)]);
++        let op = decode_operation(&a.finish(vec![("textOperations", ops)])).unwrap();
++        assert_eq!(op.insertion, "hello");
++        assert_eq!(op.deletion_count, 3);
++        assert!(op.fields.contains(&"acceptedCandidate.candidate=5".to_string()));
++    }
++
++    #[test]
++    fn garbage_is_rejected() {
++        assert!(decode_operation(b"not a plist").is_none());
++    }
++}

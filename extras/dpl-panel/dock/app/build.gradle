@@ -1,0 +1,45 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Signing: keystore/dock.p12, password in keystore/password.txt (see README).
+def ksDir = rootProject.file('keystore')
+def ksPass = new File(ksDir, 'password.txt').exists() ? new File(ksDir, 'password.txt').text.trim() : null
+
+android {
+    namespace 'com.gupta.dock'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.gupta.dock'
+        minSdk 30
+        targetSdk 30   // the panel runs Android 11
+        versionCode 15
+        versionName '2.4'
+    }
+
+    signingConfigs {
+        household {
+            storeFile new File(ksDir, 'dock.p12')
+            storePassword ksPass
+            keyAlias 'guptas-dock'
+            keyPassword ksPass
+            storeType 'pkcs12'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig ksPass ? signingConfigs.household : signingConfigs.debug
+        }
+    }
+    lint {
+        // Built only for this Android 11 panel, never published, so the Play target-SDK rule does not apply.
+        disable 'ExpiredTargetSdkVersion'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}

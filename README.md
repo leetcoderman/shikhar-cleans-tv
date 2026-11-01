@@ -23,6 +23,15 @@
   <a href="docs/PRESS.md"><img src="docs/card.jpg" alt="407 TV models · 106 brands · 31 languages · 572 KB launcher. Featured in TechCrunch, TechRadar, Tom's Guide, Mashable, Android Authority, XDA, FlatpanelsHD, It's FOSS, Phandroid, GIGAZINE, Xataka, WinFuture, Frandroid, Macitynet, Techaeris, TechPP and 396 more: 412 articles from 54 countries. Before: stock Google TV home with a sponsored ad. After: the Clean Your TV launcher." width="800"></a>
 </p>
 
+> **This is a fork: `shikhar-cleans-tv`.** Everything from [Gathin23/cleanyourtv](https://github.com/Gathin23/cleanyourtv)
+> is here unchanged, plus what was added while setting up "Gupta's TV":
+> - launcher additions: horizon backdrop with hourly quotes, `home_name`, `header_inset`, `settings_button_app`, a focus
+>   hand-off to an on-screen dock (see `themes/README.md`);
+> - [`extras/`](extras/): an **iPhone Apple TV Remote** bridge, an **AirPlay mirroring receiver** for Mac and iPhone,
+>   a **DPL / RuiPin panel** setup with its dock app, and **Haier MatrixTV EE** lists and guides.
+>
+> Start with the normal [Quick start](#quick-start) for your TV, then read [`extras/README.md`](extras/README.md).
+
 ## Start here
 
 | You have | Go to |

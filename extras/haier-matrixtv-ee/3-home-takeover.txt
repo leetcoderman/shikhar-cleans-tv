@@ -1,0 +1,6 @@
+# Haier MatrixTV EE: run only after the Clean Your TV launcher is installed and set as Home.
+# launcherx is Home at priority 2 and setupwraith's RecoveryActivity at 1; a third-party HOME is 0,
+# so both have to go (as on the MatrixTV CE). Saved Wi-Fi is owned by android.uid.system, not setupwraith.
+# Undo: TV_HOST=<tv ip> tools/restore.sh ../haier-matrixtv-ee/3-home-takeover.txt com.google.android.apps.tv.launcherx
+com.google.android.tungsten.setupwraith
+com.google.android.apps.tv.launcherx
